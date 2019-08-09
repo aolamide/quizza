@@ -1,0 +1,15 @@
+.question{
+    margin: 18px;
+}
+
+.option-row {
+    display: flex;
+}
+
+input[type='radio']:focus {
+    background-color: aqua;
+}
+
+div > input[type='radio']:focus {
+    border: 1px solid red;
+}
