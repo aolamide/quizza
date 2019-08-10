@@ -13,3 +13,7 @@ input[type='radio']:focus {
 div > input[type='radio']:focus {
     border: 1px solid red;
 }
+
+.popup {
+    display : none;
+}

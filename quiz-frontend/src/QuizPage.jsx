@@ -7,7 +7,8 @@ class QuizPage extends Component {
         this.state = {
             quizId : match.params.quizId,
             quiz : null,
-            starting : false
+            starting : false,
+            user : ''
         }
         console.log(this.state.quizId);
     }
@@ -23,13 +24,16 @@ class QuizPage extends Component {
         })
     }
 
-    fetchQuestions = () => {
+    fetchQuestions = (e) => {
+        e.preventDefault()
         fetch(`http://localhost:8080/api/v1/quiz/${this.state.quizId}/take`)
         .then(res => res.json())
         .then(data => {
             this.setState({
                 quiz : data.quiz,
-                starting: true
+                starting: true,
+                modalHidden : true,
+                user : this.user.value
             })
         })
     }
@@ -54,11 +58,14 @@ class QuizPage extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({answers}),
+            body: JSON.stringify({answers, takenBy : this.state.user}),
         })
         .then(res => res.json())
-        .then(result => console.log(result))
-
+        .then(data => console.log(`${data.result.name}, you got ${data.result.score} questions right out of ${data.maxScore}`))
+    }
+   
+    displayModal = () => {
+        this.popup.style.display = "block";
     }
 
     render(){
@@ -72,7 +79,13 @@ class QuizPage extends Component {
                         <h2>Duration :{duration}</h2>
                         <h3>Created :{new Date(created).toDateString()}</h3>
                         <div>
-                            <button onClick = {this.fetchQuestions}>TAKE QUIZ</button>
+                            <button onClick = {this.displayModal}>TAKE QUIZ</button>
+                        </div>  
+                        <div ref = {elem => this.popup = elem} className="popup">
+                            <form onSubmit= {this.fetchQuestions}>
+                                <input required ref={elem => this.user = elem} minLength="3" type="text" placeholder="Enter Name"/>
+                                <button type="submit" >START</button>
+                            </form>
                         </div>
                     </div>
                 );

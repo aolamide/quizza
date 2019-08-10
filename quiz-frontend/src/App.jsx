@@ -6,6 +6,7 @@ import About from './About';
 import Contact from './Contact';
 import QuizPage from './QuizPage';
 import CreateQuiz from './CreteQuiz';
+import LeaderBoard from './LeaderBoard';
 import './App.css';
 
 
@@ -17,8 +18,9 @@ function App() {
         <Route exact path='/' component={Home} />
         <Route path='/about' component={About} />
         <Route path='/contact' component={Contact} />
-        <Route path='/quiz/:quizId' component={QuizPage} />
+        <Route exact path='/quiz/:quizId' component={QuizPage} />
         <Route path='/createquiz' component={CreateQuiz} />
+        <Route path='/quiz/:quizId/leaderboard' component={LeaderBoard} />
       </Switch>
     </Router>
   );
