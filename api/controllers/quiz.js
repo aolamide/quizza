@@ -1,4 +1,3 @@
-import { quizzes } from '../dummyData';
 import Quiz from '../models/quiz';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -15,22 +14,30 @@ const quizControllers = {
             return res.json("quiz created successfully");
         });
     }, 
-    async submitQuiz(req, res) {
+    submitQuiz(req, res) {
         const userAnswers = req.body.answers;
+        const takenBy = req.body.takenBy;
         const quizId = req.params.quizId;
-        await Quiz.findById(quizId, (err, result) => {
+        Quiz.findById(quizId, (err, result) => {
             if (err) return res.status(400).json({
                 msg : "QUiz not found"
             });
+            console.log(result.takenBy)
             let realAnswers = result.answers;
             let correct = 0;
             for(let i = 0; i < realAnswers.length; i++){
                 if(userAnswers[i] === realAnswers[i]) correct++;
             }
-            res.json({
-                scoreObtained : correct,
-                maxObtainable : realAnswers.length
-            })
+            let taken = result.takenBy;
+            let newQuizTaker = {
+               name : takenBy, 
+               score : correct
+            }
+            taken.push(newQuizTaker);
+            result.save((err, saved) => {
+                if(err) res.status(500).json({msg : 'Unable to submit, try again'})
+                res.json({result : newQuizTaker, maxScore : realAnswers.length})
+            });
         })
     },
     getAllQuiz(req, res) {
@@ -41,8 +48,8 @@ const quizControllers = {
         })
         .catch(err => console.log(err))
     },
-    async getSingleQuizIntro(req, res) {
-        await Quiz.findById(req.params.quizId, (err, quizDetails) => {
+    getSingleQuizIntro(req, res) {
+        Quiz.findById(req.params.quizId, (err, quizDetails) => {
             if (err) return res.status(400).json({
                 msg : 'Quiz not found'
             })
@@ -50,8 +57,17 @@ const quizControllers = {
         })
         .select('name created creator duration expires');
     },
-    async getSingleQuizQuestions(req,res) {
-        await Quiz.findById(req.params.quizId, (err, quiz) => {
+    getQuizLeaderBoard (req, res) {
+        Quiz.findById(req.params.quizId, (err, quiz) => {
+            if (err) return res.status(400).json({
+                msg : 'Quiz not found'
+            })
+            return res.json(quiz);
+        })
+        .select('name takenBy created creator');
+    },
+    getSingleQuizQuestions(req,res) {
+        Quiz.findById(req.params.quizId, (err, quiz) => {
             if (err) return res.status(400).json({
                 msg : 'Quiz not found'
             })
