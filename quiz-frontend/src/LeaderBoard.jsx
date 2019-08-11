@@ -5,7 +5,8 @@ class LeaderBoard extends React.Component {
         super()
         this.state = {
             quizId : match.params.quizId,
-            quiz : undefined
+            quiz : null,
+            quizCreator : null,
         }
     }
    
@@ -13,8 +14,11 @@ class LeaderBoard extends React.Component {
         fetch(`http://localhost:8080/api/v1/quiz/${this.state.quizId}/leaderboard`)
         .then(res => res.json())
         .then(quiz => {
-            console.log(quiz)
-            this.setState({quiz})
+            const { name, takenBy, created, creator} = quiz;
+            this.setState({
+                quiz : {name, takenBy, created},
+                quizCreator : creator
+            })
         })
     }
 
@@ -22,11 +26,12 @@ class LeaderBoard extends React.Component {
     render() {
         
         if(this.state.quiz) {
-          const {takenBy, name, created, creator} = this.state.quiz;  
+          const {takenBy, name, created} = this.state.quiz;
+          const {name : creatorName} =   this.state.quizCreator;
           return (
             <div>
                 <h3>{name}</h3>
-                <h4>Created by {creator} at {new Date(created).toDateString()}</h4>
+                <h4>Created by {creatorName} at {new Date(created).toDateString()}</h4>
                 <table>
                     <thead>
                         <tr>

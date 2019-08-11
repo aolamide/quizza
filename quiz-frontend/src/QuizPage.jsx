@@ -7,6 +7,7 @@ class QuizPage extends Component {
         this.state = {
             quizId : match.params.quizId,
             quiz : null,
+            quizCreator : null,
             starting : false,
             user : ''
         }
@@ -17,10 +18,11 @@ class QuizPage extends Component {
         fetch(`http://localhost:8080/api/v1/quiz/${this.state.quizId}`)
         .then(res => res.json())
         .then(data => {
+            const { created, name, duration,  creator } = data.quizDetails;
             this.setState({
-                quiz : data.quizDetails
+                quiz : {created, name, duration},
+                quizCreator : creator
             })
-            console.log(this.state.quiz.creator)
         })
     }
 
@@ -71,11 +73,13 @@ class QuizPage extends Component {
     render(){
         if(this.state.quiz) {
             console.log(this.state.quiz);
-            const {creator, duration, created} = this.state.quiz;
+            const {name, duration, created} = this.state.quiz;
+            const { name : creatorName } = this.state.quizCreator;
             if (!this.state.starting) {
                 return (
                     <div>
-                        <h1>Creator : {creator}</h1>
+                        <h1>{name}</h1>
+                        <p>Created by {creatorName}</p>
                         <h2>Duration :{duration}</h2>
                         <h3>Created :{new Date(created).toDateString()}</h3>
                         <div>
