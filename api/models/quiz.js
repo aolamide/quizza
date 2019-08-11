@@ -8,15 +8,23 @@ const quizSchema = new mongoose.Schema({
         type: Date,
         default : Date.now
     },
-    creator : String,
+    creator : {
+        name : {
+            type : String,
+            trim : true
+        },
+        email : {
+            type : String,
+            trim : true
+        }
+    },
     takenBy : [
         {
             name : String, 
             score : String
         }
     ],
-    duration : String,
-    expires : String
+    duration : String
 });
 
 
