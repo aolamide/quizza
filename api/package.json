@@ -2,12 +2,12 @@
   "name": "quiz-app-api",
   "version": "1.0.0",
   "description": "API for quiz app",
-  "main": "dist/app.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node src/app.js",
     "build": "babel src -d dist",
-    "start": "npm run build && nodemon dist/app.js",
+    "start": "npm run build && node dist/app.js",
     "serve": "node dist/app.js"
   },
   "keywords": [
