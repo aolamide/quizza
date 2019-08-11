@@ -1,19 +1,65 @@
-.question{
-    margin: 18px;
+input, button, textarea {
+    outline: none;
+    border: 2px solid grey;
 }
-
-.option-row {
-    display: flex;
+input:not([type='radio']):focus, textarea:focus {
+    box-shadow: 2px 2px 2px seagreen;
 }
-
+button:hover {
+    cursor: pointer;
+}
 input[type='radio']:focus {
     background-color: aqua;
 }
-
+textarea {
+    resize: none;
+}
 div > input[type='radio']:focus {
     border: 1px solid red;
 }
 
 .popup {
     display : none;
+}
+
+/* CreateQuiz */
+#questions {
+    display: flex;
+    flex-wrap: wrap;
+}
+.question {
+    width: 48%;
+    margin: auto;
+    margin-top : 20px;
+    box-sizing: border-box;
+    padding: 18px;
+    background-color: chocolate;
+    border-radius: 10px;
+}
+.option-row {
+    display: flex;
+}
+.option {
+    width: 50%;
+    margin: 10px;
+}
+.option textarea {
+    width : 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+.question-input {
+    width: 100%;
+    border-radius : 8px;
+    height: 100px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.delete-question {
+    float: right;
+    background-color: red;
+    padding: 8px;
+    border-radius: 8px;
 }
