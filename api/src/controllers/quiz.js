@@ -1,13 +1,8 @@
 import Quiz from '../models/quiz';
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 const quizControllers = {
     createQuiz(req, res) {
-        console.log(req.headers);
-        if(req.headers.origin !== process.env.APP_ORIGIN){
-            return res.status(400).json("Not allowed");
-        }
         const newQuiz = new Quiz(req.body);
         newQuiz.save((err, result) => {
             if(err) return res.json('Not saved to database');
