@@ -4,10 +4,11 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cors from 'cors';
+dotenv.config();
 
-const url = 'mongodb://localhost:27017/test';
+const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect(url, {useNewUrlParser: true})
+mongoose.connect(MONGO_URI, {useNewUrlParser: true})
 .then(() => console.log('DB connected'))
 .catch(err => console.log(err));
 
@@ -19,7 +20,7 @@ mongoose.connection.on('error', err => {
 import quizRoutes from './routes/quiz';
 
 
-dotenv.config();
+
 //app
 const app = express();
 
