@@ -12,7 +12,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router basename="/quiz-app">
+    <Router>
       <Nav />
       <Switch>
         <Route exact path='/' component={Home} />
