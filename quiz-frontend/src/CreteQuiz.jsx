@@ -63,7 +63,7 @@ class CreateQuiz extends Component {
     }
 
     submitQuiz = async () => {
-        const response = await fetch('http://localhost:8080/api/v1/newquiz', {
+        const response = await fetch('https://lalaquiz.herokuapp.com/api/v1/newquiz', {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
