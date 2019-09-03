@@ -25,10 +25,14 @@ class CreateQuiz extends Component {
     saveQuestions = async (e) => {
         e.preventDefault();
         let questions = await document.getElementsByClassName('question');
-        console.log(questions)
         let answers = await document.querySelectorAll('select');
         const creatorName = document.getElementById('name').value;
-        const duration = document.getElementById('duration').value;
+        const durationMinutes = document.getElementById('duration-minutes').value;
+        const durationSeconds = document.getElementById('duration-seconds').value;
+        const duration = {
+            min : durationMinutes,
+            sec : durationSeconds
+        }
         const creatorEmail = document.getElementById('email').value;
         const quizName = document.getElementById('qname').value;
         const creator = {
@@ -93,7 +97,8 @@ class CreateQuiz extends Component {
                         <label>Email Address : </label> <input required id="email" type="email" />
                     </div>
                     <div>
-                        <label>Duration (in seconds) : </label> <input required id="duration" type="number" min="1"/>
+                        <label>Duration : </label> <input required id="duration-minutes" type="number" max="60" placeholder="MM"/> :
+                        <input required id="duration-seconds" type="number" max="59" placeholder="SS"/>
                     </div>
                     <div>
                         <label>QUIZ NAME :</label> <input required id="qname" type="text" />

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Questions from './Questions';
+import Timer from './Timer';
 
 class QuizPage extends Component {
     constructor({match}){
@@ -9,9 +10,9 @@ class QuizPage extends Component {
             quiz : null,
             quizCreator : null,
             starting : false,
-            user : ''
+            user : '',
+            result : null
         }
-        console.log(this.state.quizId);
     }
    
     componentDidMount() {
@@ -41,19 +42,18 @@ class QuizPage extends Component {
     }
 
     submitAnswers = (e) => {
-        e.preventDefault();
+        if(e) {
+           e.preventDefault(); 
+        }
         let inputNames = [];
         this.state.quiz.questions.forEach(question => {
             inputNames.push(question._id)
         });
-        console.log(inputNames);
-        // let answersInputs = document.querySelectorAll(`input`);
         let answers = []
         ;
         inputNames.forEach(name => {
             answers.push(document.forms[0][`q${name}`].value)
         });
-        console.log(answers);
         fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quiz._id}`, {
             method : 'POST',
             headers: {
@@ -63,7 +63,17 @@ class QuizPage extends Component {
             body: JSON.stringify({answers, takenBy : this.state.user}),
         })
         .then(res => res.json())
-        .then(data => console.log(`${data.result.name}, you got ${data.result.score} questions right out of ${data.maxScore}`))
+        .then(data => {
+                this.setState({
+                    starting : false,
+                    result : {
+                        score : data.result.score,
+                        max : data.maxScore,
+                        percent : (data.result.score/data.maxScore) * 100
+                    }
+                })
+            }
+        )
     }
    
     displayModal = () => {
@@ -72,16 +82,16 @@ class QuizPage extends Component {
 
     render(){
         if(this.state.quiz) {
-            console.log(this.state.quiz);
+            const {user, result} = this.state;
             const {name, duration, created} = this.state.quiz;
             const { name : creatorName } = this.state.quizCreator;
-            if (!this.state.starting) {
+            if (!this.state.starting && !this.state.result) {
                 return (
                     <div>
                         <h1>{name}</h1>
                         <p>Created by {creatorName}</p>
-                        <h2>Duration :{duration}</h2>
-                        <h3>Created :{new Date(created).toDateString()}</h3>
+                        <h2>Duration : {`${duration.min} minutes : ${duration.sec} seconds`}</h2>
+                        <h3>Created : {new Date(created).toDateString()}</h3>
                         <div>
                             <button onClick = {this.displayModal}>TAKE QUIZ</button>
                         </div>  
@@ -96,10 +106,22 @@ class QuizPage extends Component {
             }
             if(this.state.starting) {
                 return (
-                    <form>
-                        <Questions questions = {this.state.quiz.questions} />
-                        <button onClick = {this.submitAnswers}>SUBMIT QUIZ</button>
-                    </form>
+                    <div>
+                        <Timer stop = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} />
+                        <form>
+                            <Questions questions = {this.state.quiz.questions} />
+                            <button onClick = {this.submitAnswers}>SUBMIT QUIZ</button>
+                        </form>
+                    </div>
+                )
+            }
+            if(this.state.result) {
+                return (
+                    <div>
+                        <p>{`${user}, your score is ${result.percent}%`}</p>
+                        <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
+                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`http://localhost:3000/#/quiz/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
+                    </div>
                 )
             }
         }
