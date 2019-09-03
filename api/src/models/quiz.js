@@ -24,7 +24,7 @@ const quizSchema = new mongoose.Schema({
             score : String
         }
     ],
-    duration : String
+    duration : Object
 });
 
 
