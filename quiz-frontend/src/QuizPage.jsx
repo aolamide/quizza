@@ -24,6 +24,7 @@ class QuizPage extends Component {
                 quiz : {created, name, duration},
                 quizCreator : creator
             })
+            document.title = `${name} | Quizza`;
         })
     }
 

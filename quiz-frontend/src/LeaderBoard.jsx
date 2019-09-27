@@ -19,6 +19,7 @@ class LeaderBoard extends React.Component {
                 quiz : {name, takenBy, created},
                 quizCreator : creator
             })
+            document.title = `${name} Leaderboard | Quizza`;
         })
     }
 
