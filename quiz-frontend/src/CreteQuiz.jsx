@@ -84,6 +84,7 @@ class CreateQuiz extends Component {
                 e.target.parentNode.parentNode.remove()
             }
         })
+        document.title = `Create Quiz | Quizza`;
     }
 
     render() {
