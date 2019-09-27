@@ -121,7 +121,7 @@ class QuizPage extends Component {
                     <div>
                         <p>{`${user}, your score is ${result.percent}%`}</p>
                         <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
-                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`https://aolamide.me/quiz-app/#/quiz/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
+                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`https://quizza.live/#/quiz/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
                     </div>
                 )
             }
