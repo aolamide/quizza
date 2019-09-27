@@ -1,6 +1,6 @@
 {
   "name": "quiz-frontend",
-  "homepage" : "http://quizza.live",
+  "homepage" : "https://quizza.live",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
