@@ -28,7 +28,7 @@ const Timer = ({min, sec, stop}) => {
      
     }, 1000);
     return (
-        <div id="countdown"></div>
+        <div id="countdown"></div> 
     )
 }
 
