@@ -22,6 +22,10 @@ div > input[type='radio']:focus {
     display : none;
 }
 
+a{
+    text-decoration: none;
+}
+
 /* CreateQuiz */
 #questions {
     display: flex;
@@ -62,4 +66,28 @@ div > input[type='radio']:focus {
     background-color: red;
     padding: 8px;
     border-radius: 8px;
+}
+
+/* TIMER */
+#countdown {
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    top:0;
+    font-weight: bold;
+    font-size: 1.5rem;
+    background-color: white;
+}
+
+/* NAV */
+
+
+nav li {
+    display: inline;
+    padding : 8px;
+}
+
+.right {
+    float: right;
+    margin-right: 5px;
 }
