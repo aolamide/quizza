@@ -1,6 +1,6 @@
 {
   "name": "quiz-frontend",
-  "homepage" : "https://aolamide.me/quiz-app",
+  "homepage" : "http://quizza.live",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
