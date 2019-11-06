@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Questions from './Questions';
 import Timer from './Timer';
 
 class QuizPage extends Component {
@@ -11,12 +10,16 @@ class QuizPage extends Component {
             quizCreator : null,
             starting : false,
             user : '',
-            result : null
+            result : null,
+            currrentQuestion : 1,
+            selectedAnswer : null,
+            answers : [],
+            submitted : false
         }
     }
    
     componentDidMount() {
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}`)
+        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}`)
         .then(res => res.json())
         .then(data => {
             const { created, name, duration,  creator } = data.quizDetails;
@@ -27,10 +30,10 @@ class QuizPage extends Component {
             document.title = `${name} | Quizza`;
         })
     }
-
+    
     fetchQuestions = (e) => {
         e.preventDefault()
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/take`)
+        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}/take`)
         .then(res => res.json())
         .then(data => {
             this.setState({
@@ -42,20 +45,9 @@ class QuizPage extends Component {
         })
     }
 
-    submitAnswers = (e) => {
-        if(e) {
-           e.preventDefault(); 
-        }
-        let inputNames = [];
-        this.state.quiz.questions.forEach(question => {
-            inputNames.push(question._id)
-        });
-        let answers = []
-        ;
-        inputNames.forEach(name => {
-            answers.push(document.forms[0][`q${name}`].value)
-        });
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quiz._id}`, {
+    submitAnswers = () => {
+        let answers = this.state.answers;
+        fetch(`http://localhost:5050/api/v1/submit/${this.state.quiz._id}`, {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -67,6 +59,7 @@ class QuizPage extends Component {
         .then(data => {
                 this.setState({
                     starting : false,
+                    submitted : true,
                     result : {
                         score : data.result.score,
                         max : data.maxScore,
@@ -76,7 +69,22 @@ class QuizPage extends Component {
             }
         )
     }
-   
+
+   saveAnswer = (e) => {
+        this.setState({selectedAnswer : e.target.name});
+        let buttons = document.querySelectorAll('.btn-answers');
+        buttons.forEach(button => {
+            if(button.name === e.target.name) button.style.backgroundColor = 'green'
+            else button.style.backgroundColor = 'white';
+        })
+   }
+
+   saveAndNext = () => {
+        this.state.answers.push(this.state.selectedAnswer);
+        this.setState({selectedAnswer : null, currrentQuestion : this.state.currrentQuestion + 1});
+        document.querySelectorAll('.btn-answers').forEach(button => button.style.backgroundColor = 'white');
+   }
+
     displayModal = () => {
         this.popup.style.display = "block";
     }
@@ -108,11 +116,37 @@ class QuizPage extends Component {
             if(this.state.starting) {
                 return (
                     <div>
-                        <Timer stop = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} />
-                        <form>
-                            <Questions questions = {this.state.quiz.questions} />
-                            <button onClick = {this.submitAnswers}>SUBMIT QUIZ</button>
-                        </form>
+                        <Timer timeOver = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} stopTimer = {this.state.submitted} />
+                        <div>Question {this.state.currrentQuestion}</div>
+                        <div>
+                            {this.state.quiz.questions[this.state.currrentQuestion - 1].title }
+                        </div>
+                        <div className="option-row">
+                            <div className="option">
+                                <button className='btn-answers' onClick={this.saveAnswer} id="optionA" name="A">
+                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[0]}
+                                </button>
+                            </div>
+                            <div className="option">
+                                <button className='btn-answers' onClick={this.saveAnswer} id="optionB" name="B">
+                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[1]}
+                                </button>
+                            </div>
+                        </div>
+                        <div className="option-row">
+                            <div className="option">
+                                <button className='btn-answers' onClick={this.saveAnswer} id="optionC" name="C">
+                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[2]}
+                                </button>
+                            </div>
+                            <div className="option">
+                                <button className='btn-answers' onClick={this.saveAnswer} id="optionD" name="D">
+                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[3]}
+                                </button>
+                            </div>  
+                        </div>
+                        {this.state.quiz.questions[this.state.currrentQuestion] ? <button onClick = {this.saveAndNext}>NEXT</button> : <button onClick = {this.submitAnswers}> FINISH QUIZ</button> }
+                        <form></form>
                     </div>
                 )
             }
@@ -121,7 +155,7 @@ class QuizPage extends Component {
                     <div>
                         <p>{`${user}, your score is ${result.percent}%`}</p>
                         <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
-                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`https://quizza.live/#/quiz/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
+                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`http://localhost:3000/#/quiz/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
                     </div>
                 )
             }

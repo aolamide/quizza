@@ -46,6 +46,15 @@ a{
 .option {
     width: 50%;
     margin: 10px;
+    /* background-color: green; */
+}
+.btn-answers {
+    width: 100%;
+    border: none;
+    outline : none;
+    padding: 10px;
+    border-radius : 8px;
+    border: 2px solid grey;
 }
 .option textarea {
     width : 100%;
@@ -70,18 +79,14 @@ a{
 
 /* TIMER */
 #countdown {
-    position: fixed;
     text-align: center;
     width: 100%;
-    top:0;
     font-weight: bold;
     font-size: 1.5rem;
     background-color: white;
 }
 
 /* NAV */
-
-
 nav li {
     display: inline;
     padding : 8px;

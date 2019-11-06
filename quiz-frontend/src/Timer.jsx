@@ -1,35 +1,48 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-
-
-const Timer = ({min, sec, stop}) => {
-    var total = (min * 60 ) + Number(sec);
-    // Update the count down every 1 second
-    var x = setInterval(function() {
-        if(!document.forms[0]) {
-            clearInterval(x);
-            return;
-        }
-      //calculations for minutes and seconds
-      var minutes = Math.floor((total % (60 * 60)) / 60);
-      var seconds = Math.floor((total % (60)));
-      
-      var secondsDisplay = seconds > 10 ? seconds : '0'+seconds;
-      var minutesDisplay = minutes > 10 ? minutes : '0'+minutes;
-        
-      // Output the result in an element with id="demo"
-      document.getElementById("countdown").innerHTML = minutesDisplay + ":" + secondsDisplay;
-       total--;
-      // If the count down is over, auto submit
-      if (total < 0) {
-        clearInterval(x);
-        stop()
+class Timer extends Component {
+    constructor(props) {
+      super()
+      this.props = props
+      this.state = {
+        min : null,
+        sec : null,
+        total : 0,
+        done : false
       }
-     
-    }, 1000);
+    }
+
+  componentDidMount() {
+    var total = (this.props.min * 60 ) + Number(this.props.sec);
+    this.setState({total : total});
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  timer = setInterval(()  => {
+    console.log(this.props.stopTimer);
+    //calculations for minutes and seconds
+    var minutes = String(Math.floor((this.state.total % (60 * 60)) / 60)).padStart(2, 0);
+    var seconds = String(Math.floor((this.state.total % (60)))).padStart(2, 0);
+    
+    this.setState({
+      min : minutes, sec : seconds
+    }); 
+    this.setState({total : this.state.total - 1});
+    // If the count down is over, auto submit
+    if (this.state.total < 0) {
+      clearInterval(this.timer);
+      this.props.timeOver();
+    }
+  }, 1000);
+
+  render() {
     return (
-        <div id="countdown"></div> 
+      <div id="countdown">{this.state.min ? this.state.min + ':' + this.state.sec : 'Ready'}</div>
     )
-}
+  }
+};
 
 export default Timer;
