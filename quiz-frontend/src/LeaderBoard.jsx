@@ -11,7 +11,7 @@ class LeaderBoard extends React.Component {
     }
    
     componentDidMount() {
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/leaderboard`)
+        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}/leaderboard`)
         .then(res => res.json())
         .then(quiz => {
             const { name, takenBy, created, creator} = quiz;
