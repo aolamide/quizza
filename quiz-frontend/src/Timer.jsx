@@ -17,6 +17,12 @@ class Timer extends Component {
     this.setState({total : total});
   }
 
+  componentDidUpdate(){
+    if(this.props.submitted){
+      clearInterval(this.timer);
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.timer);
   }
