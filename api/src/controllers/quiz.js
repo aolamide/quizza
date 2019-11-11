@@ -1,12 +1,16 @@
 import Quiz from '../models/quiz';
+import { resolveSoa } from 'dns';
 
 
 const quizControllers = {
     createQuiz(req, res) {
         const newQuiz = new Quiz(req.body);
         newQuiz.save((err, result) => {
-            if(err) return res.json('Not saved to database');
-            return res.json("quiz created successfully");
+            if(err) {
+                console.log(err);
+                return res.status(400).json({fail :'Not saved to database'});
+            }
+            return res.status(200).json({success : 'quiz created successfully', quizId : result._id});
         });
     }, 
     submitQuiz(req, res) {
@@ -17,7 +21,6 @@ const quizControllers = {
             if (err) return res.status(400).json({
                 msg : "QUiz not found"
             });
-            console.log(result.takenBy)
             let realAnswers = result.answers;
             let correct = 0;
             for(let i = 0; i < realAnswers.length; i++){
