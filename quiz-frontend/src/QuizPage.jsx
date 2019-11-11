@@ -19,7 +19,7 @@ class QuizPage extends Component {
     }
    
     componentDidMount() {
-        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}`)
+        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}`)
         .then(res => res.json())
         .then(data => {
             const { created, name, duration,  creator } = data.quizDetails;
@@ -33,7 +33,7 @@ class QuizPage extends Component {
     
     fetchQuestions = (e) => {
         e.preventDefault()
-        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}/take`)
+        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/take`)
         .then(res => res.json())
         .then(data => {
             this.setState({
@@ -48,7 +48,7 @@ class QuizPage extends Component {
     submitAnswers = () => {
         this.saveAndNext();
         let answers = this.state.answers;
-        fetch(`http://localhost:5050/api/v1/submit/${this.state.quiz._id}`, {
+        fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quiz._id}`, {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -158,7 +158,7 @@ class QuizPage extends Component {
                     <div>
                         <p>{`${user}, your score is ${result.percent}%`}</p>
                         <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
-                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`http://localhost:3000/#/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
+                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`https://quizza.live/#/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
                     </div>
                 )
             }
