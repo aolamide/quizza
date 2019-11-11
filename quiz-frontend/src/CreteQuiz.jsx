@@ -137,6 +137,7 @@ class CreateQuiz extends Component {
         <div>
            <p>Quiz created successfully</p> 
            <p>Link to take quiz is <a href={`https://quizza.live/#/${this.state.quizId}`}>{`https://quizza.live/#/${this.state.quizId}`}</a></p>
+           <p>Live leaderboard can be seen here : <a href={`https://quizza.live/#/${this.state.quizId}/leaderboard`}>{`https://quizza.live/#/${this.state.quizId}/leaderboard`}</a> </p>
         </div>
     )
     }
