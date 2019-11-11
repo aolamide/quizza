@@ -22,7 +22,6 @@ class Timer extends Component {
   }
 
   timer = setInterval(()  => {
-    console.log(this.props.stopTimer);
     //calculations for minutes and seconds
     var minutes = String(Math.floor((this.state.total % (60 * 60)) / 60)).padStart(2, 0);
     var seconds = String(Math.floor((this.state.total % (60)))).padStart(2, 0);
@@ -39,8 +38,9 @@ class Timer extends Component {
   }, 1000);
 
   render() {
+    const {min, sec, total} = this.state;
     return (
-      <div id="countdown">{this.state.min ? this.state.min + ':' + this.state.sec : 'Ready'}</div>
+      <div className={'countdown ' + (total < 30 ? 'red' : '' ) }>{min ? min + ':' + sec : 'Ready'}</div>
     )
   }
 };

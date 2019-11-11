@@ -32,7 +32,7 @@ class LeaderBoard extends React.Component {
           return (
             <div>
                 <h3>{name}</h3>
-                <h4>Created by {creatorName} at {new Date(created).toDateString()}</h4>
+                <h4>Created by {creatorName} on {new Date(created).toDateString()}</h4>
                 <table>
                     <thead>
                         <tr>

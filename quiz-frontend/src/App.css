@@ -8,16 +8,9 @@ input:not([type='radio']):focus, textarea:focus {
 button:hover {
     cursor: pointer;
 }
-input[type='radio']:focus {
-    background-color: aqua;
-}
 textarea {
     resize: none;
 }
-div > input[type='radio']:focus {
-    border: 1px solid red;
-}
-
 .popup {
     display : none;
 }
@@ -46,16 +39,8 @@ a{
 .option {
     width: 50%;
     margin: 10px;
-    /* background-color: green; */
 }
-.btn-answers {
-    width: 100%;
-    border: none;
-    outline : none;
-    padding: 10px;
-    border-radius : 8px;
-    border: 2px solid grey;
-}
+
 .option textarea {
     width : 100%;
     padding: 12px;
@@ -77,13 +62,36 @@ a{
     border-radius: 8px;
 }
 
+/* QUIZ PAGE */
+.questionDisplay {
+    padding: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 2px black, -2px -2px 2px black;
+    border-radius: 8px;
+    min-height: 100px;
+}
+.btn-answers {
+    width: 100%;
+    border: none;
+    outline : none;
+    padding: 10px;
+    border-radius : 8px;
+    border: 2px solid grey;
+}
+
 /* TIMER */
-#countdown {
+.countdown {
     text-align: center;
     width: 100%;
     font-weight: bold;
     font-size: 1.5rem;
     background-color: white;
+    color: green;
+}
+.red{
+    color: red;
 }
 
 /* NAV */

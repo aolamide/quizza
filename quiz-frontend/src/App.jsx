@@ -25,8 +25,8 @@ function App() {
             <NavRoute exact path='/' component={Home} />
             <NavRoute path='/howitworks' component={HowItWorks} />
             <NavRoute path='/createquiz' component={CreateQuiz} />
-            <Route exact path='/quiz/:quizId' component={QuizPage} />
-            <NavRoute path='/quiz/:quizId/leaderboard' component={LeaderBoard} />
+            <Route exact path='/:quizId' component={QuizPage} />
+            <NavRoute path='/:quizId/leaderboard' component={LeaderBoard} />
         </Switch>
       </Router>
   );

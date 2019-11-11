@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Question from './Question';
 
 
 class CreateQuiz extends Component {
@@ -9,7 +10,8 @@ class CreateQuiz extends Component {
             answers : [],
             creator : null,
             duration : null,
-            expires : null
+            expires : null,
+            totalQuestions : 10
         }
 
     }
@@ -65,7 +67,9 @@ class CreateQuiz extends Component {
             this.submitQuiz();
         }
     }
-
+    displayQuestions = () => {
+        for (let i = 0; i < this.state.totalQuestions; i++) return <Question number={i} />
+    }
     submitQuiz = async () => {
         const response = await fetch('http://localhost:5050/api/v1/newquiz', {
             method : 'POST',
@@ -105,37 +109,9 @@ class CreateQuiz extends Component {
                         <label>QUIZ NAME :</label> <input required id="qname" type="text" />
                     </div>
                     <div id="questions">
-                        <div className="question">
-                            <textarea required className="question-input" placeholder="Question"></textarea>
-                            <div className="option-row">
-                                <div className="option">
-                                    <textarea required placeholder="OPTION A"></textarea>
-                                </div>
-                                <div className="option">
-                                    <textarea required placeholder="OPTION B"></textarea>
-                                </div>
-                                
-                            </div>
-                            <div className="option-row">
-                                <div className="option">
-                                    <textarea required placeholder="OPTION C"></textarea>
-                                </div>
-                                <div className="option">
-                                    <textarea required placeholder="OPTION D"></textarea>
-                                </div>
-                            </div>
-                            <div>
-                                <label htmlFor="answer">Choose correct answer</label>
-                                <select id="answer" className='answers'>
-                                    <option disabled>Choose Answer</option>
-                                    <option value="A">Option A</option>
-                                    <option value="B">Option B</option>
-                                    <option value="C">Option C</option>
-                                    <option value="D">Option D</option>
-                                </select>
-                                <button title="Delete Question" className="delete-question">DELETE</button>
-                            </div>
-                        </div>
+                        {
+                            this.displayQuestions()
+                        }
                     </div>
                     <button onClick={this.newQuestion} >ADD</button>
                     <button type="submit" >SUBMIT QUIZ</button>

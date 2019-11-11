@@ -46,6 +46,7 @@ class QuizPage extends Component {
     }
 
     submitAnswers = () => {
+        this.saveAndNext();
         let answers = this.state.answers;
         fetch(`http://localhost:5050/api/v1/submit/${this.state.quiz._id}`, {
             method : 'POST',
@@ -75,14 +76,16 @@ class QuizPage extends Component {
         let buttons = document.querySelectorAll('.btn-answers');
         buttons.forEach(button => {
             if(button.name === e.target.name) button.style.backgroundColor = 'green'
-            else button.style.backgroundColor = 'white';
+            else button.style.backgroundColor = '#ddd';
         })
    }
 
    saveAndNext = () => {
         this.state.answers.push(this.state.selectedAnswer);
-        this.setState({selectedAnswer : null, currrentQuestion : this.state.currrentQuestion + 1});
-        document.querySelectorAll('.btn-answers').forEach(button => button.style.backgroundColor = 'white');
+        if(this.state.quiz.questions[this.state.currrentQuestion]){
+            this.setState({selectedAnswer : null, currrentQuestion : this.state.currrentQuestion + 1});
+            document.querySelectorAll('.btn-answers').forEach(button => button.style.backgroundColor = '#ddd');
+        }
    }
 
     displayModal = () => {
@@ -115,11 +118,11 @@ class QuizPage extends Component {
             }
             if(this.state.starting) {
                 return (
-                    <div>
-                        <Timer timeOver = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} stopTimer = {this.state.submitted} />
+                    <div className="quiz">
+                        <Timer timeOver = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} />
                         <div>Question {this.state.currrentQuestion}</div>
-                        <div>
-                            {this.state.quiz.questions[this.state.currrentQuestion - 1].title }
+                        <div className="questionDisplay">
+                            <div>{this.state.quiz.questions[this.state.currrentQuestion - 1].title }</div>
                         </div>
                         <div className="option-row">
                             <div className="option">
@@ -155,7 +158,7 @@ class QuizPage extends Component {
                     <div>
                         <p>{`${user}, your score is ${result.percent}%`}</p>
                         <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
-                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`http://localhost:3000/#/quiz/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
+                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`http://localhost:3000/#/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
                     </div>
                 )
             }
