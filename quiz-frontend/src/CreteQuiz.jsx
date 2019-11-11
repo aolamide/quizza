@@ -11,19 +11,10 @@ class CreateQuiz extends Component {
             creator : null,
             duration : null,
             expires : null,
-            totalQuestions : 10
+            totalQuestions : 3
         }
 
     }
-
-    newQuestion = () => {
-        const div = document.createElement('div');
-        div.innerHTML = '<textarea required class="question-input" placeholder="Question"></textarea><div class="option-row"><div class="option"><textarea required placeholder="OPTION A"></textarea></div><div class="option"><textarea required placeholder="OPTION B"></textarea></div></div><div class="option-row"><div class="option"><textarea required placeholder="OPTION C"></textarea></div><div class="option"><textarea required placeholder="OPTION D"></textarea></div></div><div><label for="answer">Choose correct answer</label><select id="answer" class="answers"><option disabled>Choose Answer</option><option value="A">Option A</option><option value="B">Option B</option><option value="C">Option C</option><option value="D">Option D</option></select><button title="Delete Question" class="delete-question">DELETE</button></div>';
-        div.classList.add('question');
-       const questionsBox = document.getElementById('questions');
-       questionsBox.appendChild(div);
-    }
-
     saveQuestions = async (e) => {
         e.preventDefault();
         let questions = await document.getElementsByClassName('question');
@@ -44,11 +35,11 @@ class CreateQuiz extends Component {
         let allQuestions = [];
         let allAnswers = [];
         for(let i = 0; i < questions.length; i++){
-            let title = questions[i].children[0].value;
-            let optionA = questions[i].children[1].children[0].children[0].value;
-            let optionB = questions[i].children[1].children[1].children[0].value;
-            let optionC = questions[i].children[2].children[0].children[0].value;
-            let optionD = questions[i].children[2].children[1].children[0].value;
+            let title = questions[i].children[1].value;
+            let optionA = questions[i].children[2].children[0].children[0].value;
+            let optionB = questions[i].children[2].children[1].children[0].value;
+            let optionC = questions[i].children[3].children[0].children[0].value;
+            let optionD = questions[i].children[3].children[1].children[0].value;
             let options =[optionA, optionB, optionC, optionD];
             let singleQuestion = {title : title, options : options};
             allQuestions.push(singleQuestion);
@@ -67,9 +58,7 @@ class CreateQuiz extends Component {
             this.submitQuiz();
         }
     }
-    displayQuestions = () => {
-        for (let i = 0; i < this.state.totalQuestions; i++) return <Question number={i} />
-    }
+
     submitQuiz = async () => {
         const response = await fetch('http://localhost:5050/api/v1/newquiz', {
             method : 'POST',
@@ -110,12 +99,12 @@ class CreateQuiz extends Component {
                     </div>
                     <div id="questions">
                         {
-                            this.displayQuestions()
+                            Array.from({length : this.state.totalQuestions}, (item, i) => {
+                                return <Question number = {i + 1} />;
+                            })
                         }
                     </div>
-                    <button onClick={this.newQuestion} >ADD</button>
                     <button type="submit" >SUBMIT QUIZ</button>
-                    {/* <button onClick={this.submitQuiz}>SUBMIT QUIZ</button> */}
                 </form>
             </div>
         );
