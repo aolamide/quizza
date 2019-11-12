@@ -28,17 +28,19 @@ a{
     width: 48%;
     margin: auto;
     margin-top : 20px;
-    box-sizing: border-box;
     padding: 18px;
+    box-sizing: border-box;
     background-color: chocolate;
     border-radius: 10px;
 }
 .option-row {
     display: flex;
+    width: 100%;
 }
 .option {
     width: 50%;
     margin: 10px;
+    box-sizing: border-box;
 }
 
 .option textarea {
@@ -62,15 +64,38 @@ a{
     border-radius: 8px;
 }
 
+@media screen and (max-width : 800px) {
+    #questions{
+        display: block;
+    }
+    .question {
+        width: 90vw;
+    }
+    .question-input{
+        height: 120px;
+    }
+    .option-row {
+        display: block;
+    }
+    .option {
+        width : initial;
+        margin: 10px 0;
+    }
+    .option textarea{
+        padding: 8px;
+    }
+}
+
 /* QUIZ PAGE */
 .questionDisplay {
     padding: 7px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     box-shadow: 2px 2px 2px black, -2px -2px 2px black;
     border-radius: 8px;
     min-height: 100px;
+    text-align: center;
 }
 .btn-answers {
     width: 100%;
@@ -80,7 +105,35 @@ a{
     border-radius : 8px;
     border: 2px solid grey;
 }
+.btn-quiz {
+    float: right;
+    margin-top: 5px;
+    margin-right: 7px;
+    min-width: 80px;
+    color: white;
+    padding: 10px;
+    background-color: darkolivegreen;
+    border: none;
+}
+.quiz {
+    padding-top: 70px;
+    width: 70vw;
+    margin: auto;
+}
+.activeQuestion {
+    margin: 8px;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.02rem;
+}
 
+@media screen and (max-width : 800px) {
+    .quiz {
+        padding-top: 30px;
+        width: 90vw;
+        margin: auto;
+    }
+}
 /* TIMER */
 .countdown {
     text-align: center;
