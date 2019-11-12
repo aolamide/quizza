@@ -122,7 +122,7 @@ class QuizPage extends Component {
                 return (
                     <div className="quiz">
                         <Timer timeOver = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} submitted={this.state.submitted}/>
-                        <div>Question {this.state.currrentQuestion}</div>
+                        <div className="activeQuestion">Question {this.state.currrentQuestion} of {this.state.quiz.questions.length}</div>
                         <div className="questionDisplay">
                             <div>{this.state.quiz.questions[this.state.currrentQuestion - 1].title }</div>
                         </div>
@@ -150,7 +150,7 @@ class QuizPage extends Component {
                                 </button>
                             </div>  
                         </div>
-                        {this.state.quiz.questions[this.state.currrentQuestion] ? <button disabled={this.state.disableButton} onClick = {this.saveAndNext}>NEXT</button> : <button disabled={this.state.disableButton} onClick = {this.submitAnswers}> FINISH QUIZ</button> }
+                        {this.state.quiz.questions[this.state.currrentQuestion] ? <button disabled={this.state.disableButton}  className="btn-quiz" onClick = {this.saveAndNext}>NEXT</button> : <button disabled={this.state.disableButton} className="btn-quiz" onClick = {this.submitAnswers}> FINISH QUIZ</button> }
                         <form></form>
                     </div>
                 )
