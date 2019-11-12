@@ -158,7 +158,7 @@ class QuizPage extends Component {
             if(this.state.result) {
                 return (
                     <div>
-                        <p>{`${user}, your score is ${result.percent}%`}</p>
+                        <p>{`${user}, your score is ${result.percent.toFixed(1)}%`}</p>
                         <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
                         <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`https://quizza.live/#/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
                     </div>
