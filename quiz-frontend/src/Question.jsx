@@ -12,7 +12,6 @@ const Question = ({number}) => {
                 <div className="option">
                     <textarea required placeholder="OPTION B"></textarea>
                 </div>
-                
             </div>
             <div className="option-row">
                 <div className="option">
@@ -31,7 +30,6 @@ const Question = ({number}) => {
                     <option value="C">Option C</option>
                     <option value="D">Option D</option>
                 </select>
-                <button title="Delete Question" className="delete-question">DELETE</button>
             </div>
         </div>
     )
