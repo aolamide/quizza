@@ -84,11 +84,6 @@ class CreateQuiz extends Component {
         this.setState({quizId : res.quizId, status : 'completed'})
     }
     componentDidMount() {
-        window.addEventListener('click', e => {
-            if(e.target.classList.contains('delete-question')) {
-                e.target.parentNode.parentNode.remove()
-            }
-        })
         document.title = `Create Quiz | Quizza`;
     }
 
@@ -124,7 +119,7 @@ class CreateQuiz extends Component {
                         <div id="questions">
                             {
                                 Array.from({length : this.state.noOfQuestions}, (item, i) => {
-                                    return <Question number = {i + 1} />;
+                                    return <Question key={i} number = {i + 1} />;
                                 })
                             }
                         </div>
