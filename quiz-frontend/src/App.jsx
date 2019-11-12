@@ -4,7 +4,7 @@ import Nav from './Nav';
 import Home from './Home';
 import HowItWorks from './HowItWorks';
 import QuizPage from './QuizPage';
-import CreateQuiz from './CreteQuiz';
+import CreateQuiz from './CreateQuiz';
 import LeaderBoard from './LeaderBoard';
 import './App.css';
 
