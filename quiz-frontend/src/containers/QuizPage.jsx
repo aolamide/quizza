@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Timer from './Timer';
+import Timer from '../components/Timer';
 
 class QuizPage extends Component {
     constructor({match}){
@@ -22,7 +22,7 @@ class QuizPage extends Component {
     componentDidMount() {
         fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}`)
         .then(res => res.json())
-        .then(data => {
+        .then(data => {''
             const { created, name, duration,  creator } = data.quizDetails;
             this.setState({
                 quiz : {created, name, duration},

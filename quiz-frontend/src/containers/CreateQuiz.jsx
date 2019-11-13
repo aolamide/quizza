@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Question from './Question';
+import Question from '../components/Question';
 
 
 class CreateQuiz extends Component {

@@ -1,12 +1,12 @@
 import React from 'react';
 import  { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Nav from './Nav';
-import Home from './Home';
-import HowItWorks from './HowItWorks';
-import QuizPage from './QuizPage';
-import CreateQuiz from './CreateQuiz';
-import LeaderBoard from './LeaderBoard';
-import './App.css';
+import Nav from './components/Nav';
+import Home from './containers/Home';
+import HowItWorks from './containers/HowItWorks';
+import QuizPage from './containers/QuizPage';
+import CreateQuiz from './containers/CreateQuiz';
+import LeaderBoard from './containers/LeaderBoard';
+import './css/App.css';
 
 
 const NavRoute = ({exact, path, component: Component}) => (
