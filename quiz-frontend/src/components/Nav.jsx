@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 function Nav() {
   return (
-   <nav>
+   <nav style={{position : 'fixed', width : '100%', backgroundColor:'white', top : '0', zIndex : '1000', padding: '5px'}}>
        <ul>
            <Link to='/'>
             <li>Home</li>
@@ -13,7 +13,7 @@ function Nav() {
               <li>How It Works</li>
             </Link>
             <Link to='/createquiz'>
-              <li>Create Quiz</li>
+              <button>Create Quiz</button>
             </Link>
            </span>
        </ul>
