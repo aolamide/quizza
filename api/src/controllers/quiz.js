@@ -1,5 +1,4 @@
 import Quiz from '../models/quiz';
-import { resolveSoa } from 'dns';
 
 
 const quizControllers = {
@@ -8,7 +7,7 @@ const quizControllers = {
         newQuiz.save((err, result) => {
             if(err) {
                 console.log(err);
-                return res.status(400).json({fail :'Not saved to database'});
+                return res.status(400).json({error :'Quiz not saved'});
             }
             return res.status(200).json({success : 'quiz created successfully', quizId : result._id});
         });
@@ -39,38 +38,43 @@ const quizControllers = {
         })
     },
     getAllQuiz(req, res) {
-       
         Quiz.find()
+        .populate('creator', '_id name email')
         .then(quizzes => {
             res.json({ quizzes });
         })
         .catch(err => console.log(err))
     },
     getSingleQuizIntro(req, res) {
-        Quiz.findById(req.params.quizId, (err, quizDetails) => {
+        Quiz.findById(req.params.quizId)
+        .populate('creator', '_id name email')
+        .select('name created creator duration expires')
+        .exec((err, quizDetails) => {
             if (err) return res.status(400).json({
-                msg : 'Quiz not found'
+                error : 'Quiz not found'
             })
             return res.json({quizDetails});
-        })
-        .select('name created creator duration expires');
+        });
     },
     getQuizLeaderBoard (req, res) {
-        Quiz.findById(req.params.quizId, (err, quiz) => {
+        Quiz.findById(req.params.quizId)
+        .populate('creator', '_id name email')
+        .select('name takenBy created creator')
+        .exec((err, quiz) => {
             if (err) return res.status(400).json({
-                msg : 'Quiz not found'
+                error : 'Quiz not found'
             })
             return res.json(quiz);
-        })
-        .select('name takenBy created creator');
+        });
     },
     getSingleQuizQuestions(req,res) {
         Quiz.findById(req.params.quizId, (err, quiz) => {
             if (err) return res.status(400).json({
-                msg : 'Quiz not found'
+                error : 'Quiz not found'
             })
-            return res.json({quiz});
+            return res.json(quiz);
         })
+        .select('questions');
     },
     deleteQuiz(req, res) {
         Quiz.findByIdAndDelete(req.params.quizId, (err, result) => {

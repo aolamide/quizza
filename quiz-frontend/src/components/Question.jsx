@@ -23,8 +23,8 @@ const Question = ({number}) => {
             </div>
             <div>
                 <label htmlFor="answer">Choose correct answer</label>
-                <select id="answer" className='answers'>
-                    <option disabled>Choose Answer</option>
+                <select style={{borderRadius : '6px', padding : '7px', marginLeft :'8px'}} id="answer" className='answers'>
+                    <option selected disabled>Choose Answer</option>
                     <option value="A">Option A</option>
                     <option value="B">Option B</option>
                     <option value="C">Option C</option>

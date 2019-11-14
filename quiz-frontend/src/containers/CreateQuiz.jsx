@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Question from '../components/Question';
+import styles from '../css/createquiz.module.css';
+import { isAuthenticated } from '../auth';
 
 
 class CreateQuiz extends Component {
@@ -8,19 +10,17 @@ class CreateQuiz extends Component {
         this.state = {
             questions : [],
             answers : [],
-            creator : null,
-            duration : null,
-            expires : null,
-            noOfQuestions : 3,
+            duration : '',
+            noOfQuestions : 0,
             status : 'fillingDetails',
             quizId : '',
-            sending : false
+            sending : false,
+            name : '', 
+            error : ''
         }
-
     }
     saveDetails = (e) => {
         e.preventDefault();
-        const creatorName = document.getElementById('name').value;
         const durationMinutes = document.getElementById('duration-minutes').value;
         const durationSeconds = document.getElementById('duration-seconds').value;
         const noOfQuestions = document.getElementById('qnos').value;
@@ -28,15 +28,9 @@ class CreateQuiz extends Component {
             min : durationMinutes,
             sec : durationSeconds
         }
-        const creatorEmail = document.getElementById('email').value;
         const quizName = document.getElementById('qname').value;
-        const creator = {
-            name : creatorName,
-            email : creatorEmail
-        }
         this.setState({
             name : quizName,
-            creator : creator,
             duration : duration,
             noOfQuestions : noOfQuestions,
             status : 'fillingQuiz'
@@ -68,20 +62,35 @@ class CreateQuiz extends Component {
         });
         if(window.confirm(`Are you sure you want to submit ? `)) {
             this.submitQuiz();
+        } else {
+            this.setState({sending : false});
         }
     }
 
-    submitQuiz = async () => {
-        const response = await fetch('https://lalaquiz.herokuapp.com/api/v1/newquiz', {
+    submitQuiz = () => {
+        this.setState({error : ''});
+        const {questions, answers, duration, name} = this.state;
+        let jwt = isAuthenticated();
+        let creator = jwt.user._id; 
+        let token = jwt.token;
+        fetch('http://localhost:5050/api/v1/newquiz', {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization : `Bearer ${token}`
             },
-            body: JSON.stringify(this.state),
-        });
-        const res = await response.json();
-        this.setState({quizId : res.quizId, status : 'completed'})
+            body: JSON.stringify({questions, answers, creator, duration, name}),
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.error) {
+                this.setState({error : data.error});
+                return;
+            }
+            this.setState({quizId : data.quizId, status : 'completed'})
+        })
+        .catch(err => console.log(err));
     }
     componentDidMount() {
         document.title = `Create Quiz | Quizza`;
@@ -90,23 +99,23 @@ class CreateQuiz extends Component {
     render() {
         if(this.state.status === 'fillingDetails') {
             return (
-                <div>
-                    <form onSubmit={this.saveDetails}>
+                <div className={styles.details}>
+                    <form onSubmit={this.saveDetails} className={styles.quizForm}>
                         <div>
-                            <label>Name : </label> <input required id="name" type="text"/>
+                            <p className={styles.head}>CREATE QUIZ</p>
                         </div>
                         <div>
-                            <label>Email Address : </label> <input required id="email" type="email" />
+                            <label>QUIZ NAME :</label> 
+                            <input required id="qname" type="text" />
                         </div>
                         <div>
-                            <label>Duration : </label> <input required id="duration-minutes" type="number" max="60" placeholder="MM"/> :
+                            <label>NUMBER OF QUESTIONS :</label> 
+                            <input required id="qnos" type="number" min='3' />
+                        </div>
+                        <div>
+                            <label>DURATION : </label> 
+                            <input required id="duration-minutes" type="number" max="60" placeholder="MM"/> :
                             <input required id="duration-seconds" type="number" max="59" placeholder="SS"/>
-                        </div>
-                        <div>
-                            <label>QUIZ NAME :</label> <input required id="qname" type="text" />
-                        </div>
-                        <div>
-                            <label>NUMBER OF QUESTIONS :</label> <input required id="qnos" type="number" min='5' />
                         </div>
                         <button disabled={this.state.sending}>CONTINUE</button>
                     </form>
@@ -114,7 +123,8 @@ class CreateQuiz extends Component {
             )
         } else if(this.state.status === "fillingQuiz"){
             return(
-                <div>
+                <div className={styles.quiz}>
+                    <p className={styles.head}>{this.state.name}</p>
                     <form onSubmit={this.saveQuestions}>
                         <div id="questions">
                             {
@@ -123,16 +133,19 @@ class CreateQuiz extends Component {
                                 })
                             }
                         </div>
-                        <button disabled={this.state.sending} type="submit" >SUBMIT QUIZ</button>
+                        {this.state.error && <p style={{textAlign:'center', color: 'red', fontWeight :'bold'}}>{this.state.error}</p>}
+                        <button className={styles.button} disabled={this.state.sending} type="submit" >SUBMIT QUIZ</button>
                     </form>
                 </div>
             );
     } else if(this.state.status === 'completed')
     return (
-        <div>
-           <p>Quiz created successfully</p> 
-           <p>Link to take quiz is <a href={`https://quizza.live/#/${this.state.quizId}`}>{`https://quizza.live/#/${this.state.quizId}`}</a></p>
-           <p>Live leaderboard can be seen here : <a href={`https://quizza.live/#/${this.state.quizId}/leaderboard`}>{`https://quizza.live/#/${this.state.quizId}/leaderboard`}</a> </p>
+        <div className={styles.complete}>
+            <div>
+                <p className={styles.head}>Quiz created successfully</p> 
+                <p>Link to take quiz is <a href={`https://quizza.live/#/${this.state.quizId}`}>{`https://quizza.live/${this.state.quizId}`}</a></p>
+                <p>Live leaderboard can be seen here : <a href={`https://quizza.live/${this.state.quizId}/leaderboard`}>{`https://quizza.live/${this.state.quizId}/leaderboard`}</a> </p>
+            </div>
         </div>
     )
     }

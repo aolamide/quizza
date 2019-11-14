@@ -17,7 +17,6 @@ class Nav extends React.Component{
 
   componentDidMount() {
     let signedIn = isAuthenticated();
-    console.log(signedIn);
     if(signedIn) 
     {
       this.setState({user : signedIn.user});

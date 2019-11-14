@@ -5,7 +5,7 @@ input, button, textarea {
 textarea:focus {
     box-shadow: 2px 2px 2px seagreen;
 } 
-button:hover {
+button:hover, select:hover{
     cursor: pointer;
 }
 .popup {
@@ -34,7 +34,7 @@ a{
     margin-top : 20px;
     padding: 18px;
     box-sizing: border-box;
-    background-color: chocolate;
+    background-color: brown;
     border-radius: 10px;
 }
 .option-row {
@@ -174,7 +174,6 @@ nav button {
     z-index: 1;
     top: 110%;
     right: 0;
-    /* margin-left: -60px; */
 }
 
 .dropdown:hover .dropdown-content {

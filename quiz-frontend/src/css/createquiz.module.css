@@ -1,0 +1,64 @@
+
+.details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.quizForm {
+    padding: 30px;
+    box-shadow: 2px 2px 2px grey, -2px -2px 2px grey;
+}
+
+.quizForm div {
+    margin-bottom: 10px;
+}
+
+.quizForm input {
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+    padding: 7px;
+    margin-left: 10px
+}
+.quizForm input[type=number] {
+    width: 50px;
+}
+.head {
+    text-align : center;
+    font-weight : bold; 
+    color : rgba(0, 0, 0, 0.7);
+}
+.quizForm button {
+    display: block;
+    width: 100px;
+    margin: auto;
+    padding: 10px;
+    color: white;
+    background-color: black
+}
+
+.button {
+    padding: 12px;
+    display: block;
+    margin: 30px auto;
+    width: 120px;
+}
+
+.quiz {
+    padding: 30px;
+    padding-top: 60px;
+}
+
+.complete { 
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+    text-align: center
+}
+
+.complete a {
+    color: burlywood;
+}

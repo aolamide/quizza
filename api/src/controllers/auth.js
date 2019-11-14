@@ -52,12 +52,12 @@ const requireSignIn = expressJwt({
     userProperty : "auth"
 });
 
-const userById = (req, res, next, id) => {
-    User.findById(id)
+const confirmUser = (req, res, next) => {
+    User.findById(req.body.creator)
     .exec((err, user) => {
         if(err || !user){
             return res.status(400).json({
-                error: "User not found"
+                error: "There was an error creating quiz, please relogin and create again"
             })
         }
         req.profile = user; // adds profile object in req with user info
@@ -66,7 +66,8 @@ const userById = (req, res, next, id) => {
 }
 
 const hasAuthorization = (req, res, next) => {
-    const authorized = req.profile && req.auth && req.profile._id === req.auth._id;
+    const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
+    console.log('auth', req.auth._id, 'profile', req.profile._id);
     if(!authorized) {
         return res.status(403).json({
             error : "User is not authorized to perform this action"
@@ -75,4 +76,4 @@ const hasAuthorization = (req, res, next) => {
     next()
 }
 
-export { signUp, signIn, requireSignIn, userById, hasAuthorization };
+export { signUp, signIn, requireSignIn, confirmUser, hasAuthorization };

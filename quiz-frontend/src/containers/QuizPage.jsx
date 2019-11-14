@@ -13,6 +13,7 @@ class QuizPage extends Component {
             result : null,
             currrentQuestion : 1,
             selectedAnswer : null,
+            questions : '',
             answers : [],
             submitted : false,
             disableButton :  false
@@ -20,9 +21,9 @@ class QuizPage extends Component {
     }
    
     componentDidMount() {
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}`)
+        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}`)
         .then(res => res.json())
-        .then(data => {''
+        .then(data => {
             const { created, name, duration,  creator } = data.quizDetails;
             this.setState({
                 quiz : {created, name, duration},
@@ -34,11 +35,11 @@ class QuizPage extends Component {
     
     fetchQuestions = (e) => {
         e.preventDefault()
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/take`)
+        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}/take`)
         .then(res => res.json())
         .then(data => {
             this.setState({
-                quiz : data.quiz,
+                questions : data.questions,
                 starting: true,
                 modalHidden : true,
                 user : this.user.value
@@ -50,7 +51,7 @@ class QuizPage extends Component {
         this.saveAndNext();
         this.setState({disableButton : true, submitted : true});
         let answers = this.state.answers;
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quiz._id}`, {
+        fetch(`http://localhost:5050/api/v1/submit/${this.state.quizId}`, {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -84,7 +85,7 @@ class QuizPage extends Component {
    saveAndNext = () => {
        this.setState({disableButton : true});
         this.state.answers.push(this.state.selectedAnswer);
-        if(this.state.quiz.questions[this.state.currrentQuestion]){
+        if(this.state.questions[this.state.currrentQuestion]){
             this.setState({selectedAnswer : null, currrentQuestion : this.state.currrentQuestion + 1, disableButton : false});
             document.querySelectorAll('.btn-answers').forEach(button => button.style.backgroundColor = '#ddd');
         }
@@ -101,7 +102,7 @@ class QuizPage extends Component {
             const { name : creatorName } = this.state.quizCreator;
             if (!this.state.starting && !this.state.result) {
                 return (
-                    <div>
+                    <div style={{padding : '10px'}}>
                         <h1>{name}</h1>
                         <p>Created by {creatorName}</p>
                         <h2>Duration : {`${duration.min} minutes : ${duration.sec} seconds`}</h2>
@@ -122,42 +123,42 @@ class QuizPage extends Component {
                 return (
                     <div className="quiz">
                         <Timer timeOver = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} submitted={this.state.submitted}/>
-                        <div className="activeQuestion">Question {this.state.currrentQuestion} of {this.state.quiz.questions.length}</div>
+                        <div className="activeQuestion">Question {this.state.currrentQuestion} of {this.state.questions.length}</div>
                         <div className="questionDisplay">
-                            <div>{this.state.quiz.questions[this.state.currrentQuestion - 1].title }</div>
+                            <div>{this.state.questions[this.state.currrentQuestion - 1].title }</div>
                         </div>
                         <div className="option-row">
                             <div className="option">
                                 <button className='btn-answers' onClick={this.saveAnswer} id="optionA" name="A">
-                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[0]}
+                                {this.state.questions[this.state.currrentQuestion - 1].options[0]}
                                 </button>
                             </div>
                             <div className="option">
                                 <button className='btn-answers' onClick={this.saveAnswer} id="optionB" name="B">
-                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[1]}
+                                {this.state.questions[this.state.currrentQuestion - 1].options[1]}
                                 </button>
                             </div>
                         </div>
                         <div className="option-row">
                             <div className="option">
                                 <button className='btn-answers' onClick={this.saveAnswer} id="optionC" name="C">
-                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[2]}
+                                {this.state.questions[this.state.currrentQuestion - 1].options[2]}
                                 </button>
                             </div>
                             <div className="option">
                                 <button className='btn-answers' onClick={this.saveAnswer} id="optionD" name="D">
-                                {this.state.quiz.questions[this.state.currrentQuestion - 1].options[3]}
+                                {this.state.questions[this.state.currrentQuestion - 1].options[3]}
                                 </button>
                             </div>  
                         </div>
-                        {this.state.quiz.questions[this.state.currrentQuestion] ? <button disabled={this.state.disableButton}  className="btn-quiz" onClick = {this.saveAndNext}>NEXT</button> : <button disabled={this.state.disableButton} className="btn-quiz" onClick = {this.submitAnswers}> FINISH QUIZ</button> }
+                        {this.state.questions[this.state.currrentQuestion] ? <button disabled={this.state.disableButton}  className="btn-quiz" onClick = {this.saveAndNext}>NEXT</button> : <button disabled={this.state.disableButton} className="btn-quiz" onClick = {this.submitAnswers}> FINISH QUIZ</button> }
                         <form></form>
                     </div>
                 )
             }
             if(this.state.result) {
                 return (
-                    <div>
+                    <div style={{padding : '10px'}}>
                         <p>{`${user}, your score is ${result.percent.toFixed(1)}%`}</p>
                         <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
                         <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`https://quizza.live/#/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>

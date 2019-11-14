@@ -9,14 +9,8 @@ const quizSchema = new mongoose.Schema({
         default : Date.now
     },
     creator : {
-        name : {
-            type : String,
-            trim : true
-        },
-        email : {
-            type : String,
-            trim : true
-        }
+        type : mongoose.Schema.ObjectId,
+        ref : 'User'
     },
     takenBy : [
         {

@@ -1,5 +1,6 @@
 import React from 'react';
 import {authenticate} from '../auth';
+import { Redirect } from 'react-router-dom';
 
 class LoginAndSignup extends React.Component {
     constructor(props) {
@@ -11,19 +12,9 @@ class LoginAndSignup extends React.Component {
             pageStatus : 'login',
             error : '',
             successMessage : '',
-            loading : false
+            loading : false,
+            redirectToReferer : false
         }
-    }
-
-    clearState = () => {
-        this.setState({
-            email : '',
-            name : '',
-            password : '',
-            pageStatus : 'login',
-            error : '',
-            successMessage : '',
-        })
     }
 
     onInputChange = name => e => {
@@ -75,7 +66,7 @@ class LoginAndSignup extends React.Component {
             if(data.error) this.setState({error : data.error})
             else {
                 authenticate(data, () => {
-                    this.props.history.push('/');
+                    this.setState({redirectToReferer : true});
                 })
             }
             this.setState({loading : false});
@@ -89,6 +80,10 @@ class LoginAndSignup extends React.Component {
     }
 
     render() {
+        const { from } = this.props.location.state || { from: { pathname: '/' } };
+        if(this.state.redirectToReferer) {
+            return <Redirect to={from} />
+        }
         return (
             <div className='auth'>
                 <form ref={form => this.form = form} onSubmit={this.submitForm}>

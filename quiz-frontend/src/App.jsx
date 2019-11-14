@@ -1,5 +1,5 @@
 import React from 'react';
-import  { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import  { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Nav from './components/Nav';
 import Home from './containers/Home';
 import HowItWorks from './containers/HowItWorks';
@@ -7,6 +7,7 @@ import QuizPage from './containers/QuizPage';
 import CreateQuiz from './containers/CreateQuiz';
 import LeaderBoard from './containers/LeaderBoard';
 import LoginAndSignup from './components/LoginAndSignup';
+import { isAuthenticated } from './auth';
 import './css/App.css';
 
 
@@ -19,13 +20,27 @@ const NavRoute = ({exact, path, component: Component}) => (
   )}/>
 )
 
+const PrivateRoute = ({ component: Component, ...rest }) => (  
+<Route {...rest} render={props => (    
+    isAuthenticated() ? 
+    ( <div>
+        <Nav />
+        <Component {...props}/>
+      </div> 
+    ) 
+    : 
+    (<Redirect to={{pathname: '/login', state: { from: props.location }}}/> )  
+    )}
+  />
+)
+
 function App() {
   return (
       <Router>
         <Switch>
             <NavRoute exact path='/' component={Home} />
             <NavRoute path='/howitworks' component={HowItWorks} />
-            <NavRoute path='/createquiz' component={CreateQuiz} />
+            <PrivateRoute path='/createquiz' component={CreateQuiz} />
             <Route exact path='/login' component={LoginAndSignup} />
             <Route exact path='/:quizId' component={QuizPage} />
             <NavRoute path='/:quizId/leaderboard' component={LeaderBoard} />

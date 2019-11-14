@@ -11,7 +11,7 @@ class LeaderBoard extends React.Component {
     }
    
     componentDidMount() {
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/leaderboard`)
+        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}/leaderboard`)
         .then(res => res.json())
         .then(quiz => {
             const { name, takenBy, created, creator} = quiz;
@@ -30,7 +30,7 @@ class LeaderBoard extends React.Component {
           const {takenBy, name, created} = this.state.quiz;
           const {name : creatorName} =   this.state.quizCreator;
           return (
-            <div>
+            <div style={{padding : '10px'}}>
                 <h3>{name}</h3>
                 <h4>Created by {creatorName} on {new Date(created).toDateString()}</h4>
                 <table>
