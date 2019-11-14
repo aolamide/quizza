@@ -19,6 +19,14 @@ a{
     text-decoration: none;
 }
 
+.mask{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 0;
+}
+
 /* CreateQuiz */
 #questions {
     display: flex;
@@ -55,13 +63,6 @@ a{
     height: 100px;
     padding: 16px;
     box-sizing: border-box;
-}
-
-.delete-question {
-    float: right;
-    background-color: red;
-    padding: 8px;
-    border-radius: 8px;
 }
 
 @media screen and (max-width : 800px) {
@@ -153,7 +154,15 @@ nav li {
     padding : 8px;
 }
 
+nav button {
+    padding: 12px;
+    background-color: #07323f;
+    border: none;
+    color: white;
+    margin-left: 10px;
+}
+
 .right {
     float: right;
-    margin-right: 5px;
+    margin-right: 10px;
 }

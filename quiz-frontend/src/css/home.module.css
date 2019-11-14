@@ -1,0 +1,41 @@
+h1{
+    font-size: 3em;
+}
+.container{
+    height: 100vh;
+    font-family: 'ubuntu', sans-serif;
+    background-image : url(../images/test.png);
+    background-color: #f6f6f6;
+    background-position : left bottom;
+    background-size: 500px 500px;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+.main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    justify-content: center;
+    z-index: 3;
+}
+
+
+.creator {
+   position: fixed;
+   bottom:7px;
+   width: 100%;
+   font-size: 0.8em;
+   font-style: italic;
+   z-index: 3;
+}
+.creator:hover {
+    transform: scale(1.2);
+}
