@@ -18,8 +18,7 @@ mongoose.connection.on('error', err => {
 
 //routes
 import quizRoutes from './routes/quiz';
-
-
+import authRoutes from './routes/auth';
 
 //app
 const app = express();
@@ -28,15 +27,12 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use('/api/v1', quizRoutes);
-
-
+app.use('/api/v1', [quizRoutes, authRoutes]);
 
 
 app.get('/', (req, res) => {
-    res.json('Welcome man')
+    res.json('Welcome to Quizza API');
 }) 
-
 
 
 //listen to app

@@ -1,20 +1,16 @@
 input, button, textarea {
     outline: none;
-    border: 2px solid grey;
+    border : none;
 }
-input:not([type='radio']):focus, textarea:focus {
+textarea:focus {
     box-shadow: 2px 2px 2px seagreen;
-}
+} 
 button:hover {
     cursor: pointer;
-}
-textarea {
-    resize: none;
 }
 .popup {
     display : none;
 }
-
 a{
     text-decoration: none;
 }
@@ -166,3 +162,116 @@ nav button {
     float: right;
     margin-right: 10px;
 }
+
+.dropdown-content {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 110%;
+    right: 0;
+    /* margin-left: -60px; */
+}
+
+.dropdown:hover .dropdown-content {
+    visibility: visible;
+}
+
+.dropdown .dropdown-content::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.dropdown-content a {
+    padding: 4px;
+    color: white;
+}
+
+/* LOGIN SIGNUP */
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh
+}
+.auth form {
+    width: 500px;
+    box-shadow: 2px 2px 2px grey, -2px -2px 2px grey;
+    padding: 10px;
+}
+
+.formgroup {
+    width: 80%;
+    margin: 18px auto;
+}
+
+.formgroup label, .formgroup input {
+    display: block
+}
+.auth button {
+    display: block;
+    width: 80px;
+    margin: auto;
+}
+
+.formgroup input {
+    outline: none;
+    border: none;
+    border-bottom: 3px solid #07323f;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.formgroup label {
+    color: dimgray;
+    font-size: 1.3em;
+}
+
+.btn-auth {
+    background-color: white;
+    border: none;
+    color : #07323f;
+    font-size : 1.2em;
+}
+
+.btn-auth:hover {
+    color: grey;
+}
+
+@media screen and (max-width: 768px) {
+    .auth form {
+        width : 90vw;
+    }
+}
+.loader {
+	border: 8px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 8px solid orange;
+	width: 10px;
+	height: 10px;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+	margin: 0 auto;
+  }
+  
+  @-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+

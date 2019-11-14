@@ -6,6 +6,7 @@ import HowItWorks from './containers/HowItWorks';
 import QuizPage from './containers/QuizPage';
 import CreateQuiz from './containers/CreateQuiz';
 import LeaderBoard from './containers/LeaderBoard';
+import LoginAndSignup from './components/LoginAndSignup';
 import './css/App.css';
 
 
@@ -25,6 +26,7 @@ function App() {
             <NavRoute exact path='/' component={Home} />
             <NavRoute path='/howitworks' component={HowItWorks} />
             <NavRoute path='/createquiz' component={CreateQuiz} />
+            <Route exact path='/login' component={LoginAndSignup} />
             <Route exact path='/:quizId' component={QuizPage} />
             <NavRoute path='/:quizId/leaderboard' component={LeaderBoard} />
         </Switch>
