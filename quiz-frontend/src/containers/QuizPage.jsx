@@ -21,7 +21,7 @@ class QuizPage extends Component {
     }
    
     componentDidMount() {
-        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}`)
+        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}`)
         .then(res => res.json())
         .then(data => {
             const { created, name, duration,  creator } = data.quizDetails;
@@ -35,7 +35,7 @@ class QuizPage extends Component {
     
     fetchQuestions = (e) => {
         e.preventDefault()
-        fetch(`http://localhost:5050/api/v1/quiz/${this.state.quizId}/take`)
+        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/take`)
         .then(res => res.json())
         .then(data => {
             this.setState({
@@ -51,7 +51,7 @@ class QuizPage extends Component {
         this.saveAndNext();
         this.setState({disableButton : true, submitted : true});
         let answers = this.state.answers;
-        fetch(`http://localhost:5050/api/v1/submit/${this.state.quizId}`, {
+        fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quizId}`, {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',

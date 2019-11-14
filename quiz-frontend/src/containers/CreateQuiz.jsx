@@ -73,7 +73,7 @@ class CreateQuiz extends Component {
         let jwt = isAuthenticated();
         let creator = jwt.user._id; 
         let token = jwt.token;
-        fetch('http://localhost:5050/api/v1/newquiz', {
+        fetch('https://lalaquiz.herokuapp.com/api/v1/newquiz', {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
