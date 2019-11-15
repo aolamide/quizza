@@ -16,9 +16,6 @@ mongoose.connection.on('error', err => {
     console.log(`DB connection error: ${err.message}`)
 });
 
-//routes
-import quizRoutes from './routes/quiz';
-import authRoutes from './routes/auth';
 
 //app
 const app = express();
@@ -28,6 +25,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use('/api/v1', [quizRoutes, authRoutes]);
+
+//routes
+import quizRoutes from './routes/quiz';
+import authRoutes from './routes/auth';
 
 
 app.get('/', (req, res) => {
