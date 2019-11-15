@@ -5,16 +5,21 @@ import User from '../models/user';
 
 dotenv.config();
 
-const signUp = async (req, res) => {
-    const userExists = await User.findOne({email : req.body.email});
-    if(userExists) return res.status(403).json({
-        error : "Email is already registered"
-    })
-    const user = new User(req.body);
-    await user.save(err => {
-        if(err) res.json(err)
+const signUp = (req, res) => {
+    User.findOne({email : req.body.email}, (err, user)=> {
+        if(user) return res.status(403).json({
+            error : "Email is already registered"
+        })
+        else{
+            const newUser = new User(req.body);
+            newUser.save(err, user => {
+                if(err) return res.status(403).json({error : err})
+                else if(user) {
+                    return res.status(200).json({ message : "Sign up successful. Please login" });
+                }
+            })
+        }
     });
-    res.status(200).json({ message : "Sign up successful. Please login" });
 };
 
 const signIn = (req, res) => {
