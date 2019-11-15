@@ -7,16 +7,18 @@ dotenv.config();
 
 const signUp = (req, res) => {
     User.findOne({email : req.body.email}, (err, user)=> {
-        if(user) return res.status(403).json({
-            error : "Email is already registered"
-        })
-        else{
+        if(err || !user){
             const newUser = new User(req.body);
-            newUser.save(err, user => {
-                if(err) return res.status(403).json({error : err})
-                else if(user) {
+            newUser.save((error, saved) => {
+                if(error) return res.status(403).json({error})
+                else if(saved) {
                     return res.status(200).json({ message : "Sign up successful. Please login" });
                 }
+            })
+        }
+        else{
+            return res.status(403).json({
+                error : "Email is already registered"
             })
         }
     });
