@@ -6,8 +6,7 @@ h1{
     font-family: 'ubuntu', sans-serif;
     background-image : url(../images/test.png);
     background-color: #f6f6f6;
-    background-position : left bottom;
-    background-size: 500px 500px;
+    background-size: 100vw 100vh;
     background-repeat: no-repeat;
     margin: 0 auto;
     display: flex;
@@ -38,4 +37,13 @@ h1{
 }
 .creator:hover {
     transform: scale(1.2);
+}
+.btnCreate {
+    padding: 15px;
+    color: white;
+    background-color: blueviolet;
+    display: block;
+    margin: 30px auto;
+    font-weight: bold;
+    font-size: 1.2rem;
 }

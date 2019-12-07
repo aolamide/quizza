@@ -56,9 +56,11 @@
     align-items: center;
     height: 100vh;
     justify-content: center;
-    text-align: center
+    text-align: center;
+    padding: 20px;
 }
 
 .complete a {
     color: burlywood;
+    word-wrap: break-word;
 }
