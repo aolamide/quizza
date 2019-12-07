@@ -13,7 +13,7 @@ class CreateQuiz extends Component {
             duration : '',
             noOfQuestions : 0,
             status : 'fillingDetails',
-            quizId : '5f15256fc2662662fgsg662626727',
+            quizId : '',
             sending : false,
             name : '', 
             error : '',
