@@ -25,7 +25,7 @@ class Nav extends React.Component{
 
   render() {
     return (
-      <nav style={{position : 'fixed', width : '100%', backgroundColor:'white', top : '0', zIndex : '1000', padding: '5px', boxSizing :'border-box'}}>
+      <nav style={{position : 'fixed', width : '100%', backgroundColor:'white', top : '0', zIndex : '800', padding: '5px', boxSizing :'border-box'}}>
           <ul>
               <Link to='/'>
                <li>Home</li>
