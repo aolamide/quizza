@@ -1,6 +1,14 @@
 import mongoose from 'mongoose';
+import nanoid from 'nanoid';
+
+mongoose.set('useCreateIndex', true);
 
 const quizSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        default: () => nanoid(10),
+        unique : true
+    },
     name : String,
     questions : [{title: String, options: [String]}],
     answers : [String],
