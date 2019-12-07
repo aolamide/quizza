@@ -4,6 +4,8 @@ class LeaderBoard extends React.Component {
     constructor({match}){
         super()
         this.state = {
+            loading : true,
+            noResult : false,
             quizId : match.params.quizId,
             quiz : null,
             quizCreator : null,
@@ -14,23 +16,29 @@ class LeaderBoard extends React.Component {
         fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/leaderboard`)
         .then(res => res.json())
         .then(quiz => {
-            const { name, takenBy, created, creator} = quiz;
-            this.setState({
-                quiz : {name, takenBy, created},
-                quizCreator : creator
-            })
-            document.title = `${name} Leaderboard | Quizza`;
+            if(!quiz.error) {
+                const { name, takenBy, created, creator} = quiz;
+                this.setState({
+                    loading : false,
+                    quiz : {name, takenBy, created},
+                    quizCreator : creator
+                })
+                document.title = `${name} Leaderboard | Quizza`;
+            }
+            else {
+                this.setState({loading : false, noResult : true})
+            }
         })
     }
 
 
     render() {
-        
-        if(this.state.quiz) {
+        if(this.state.loading) return <div className='loading'></div>
+        else if(this.state.quiz) {
           const {takenBy, name, created} = this.state.quiz;
           const {name : creatorName} =   this.state.quizCreator;
           return (
-            <div style={{padding : '10px'}}>
+            <div style={{padding : '10px', marginTop : '50px', display:'flex', flexDirection:'column', alignItems : 'center'}}>
                 <h3>{name}</h3>
                 <h4>Created by {creatorName} on {new Date(created).toDateString()}</h4>
                 <table>
@@ -55,12 +63,13 @@ class LeaderBoard extends React.Component {
             </div>
         )
         }
-        return (
-            <div>
+        else if(this.state.noResult) return (
+            <div style={{marginTop : '80px'}}>
                 <h3>Quiz Not Found </h3>
                 <p>This quiz might have expired</p>
             </div>
         )
+        return <div></div>
     }
 }
 

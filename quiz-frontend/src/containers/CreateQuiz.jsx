@@ -13,14 +13,16 @@ class CreateQuiz extends Component {
             duration : '',
             noOfQuestions : 0,
             status : 'fillingDetails',
-            quizId : '',
+            quizId : '5f15256fc2662662fgsg662626727',
             sending : false,
             name : '', 
-            error : ''
+            error : '',
+            loading : false
         }
     }
     saveDetails = (e) => {
         e.preventDefault();
+        this.setState({loading : true})
         const durationMinutes = document.getElementById('duration-minutes').value;
         const durationSeconds = document.getElementById('duration-seconds').value;
         const noOfQuestions = document.getElementById('qnos').value;
@@ -30,6 +32,7 @@ class CreateQuiz extends Component {
         }
         const quizName = document.getElementById('qname').value;
         this.setState({
+            loading : false,
             name : quizName,
             duration : duration,
             noOfQuestions : noOfQuestions,
@@ -38,7 +41,7 @@ class CreateQuiz extends Component {
     }
     saveQuestions = async (e) => {
         e.preventDefault();
-        this.setState({sending : true});
+        this.setState({sending : true, loading : true});
         let questions = await document.getElementsByClassName('question');
         let answers = await document.querySelectorAll('select');
         let allQuestions = [];
@@ -57,6 +60,7 @@ class CreateQuiz extends Component {
             allAnswers.push(answers[i].value);
         }
         this.setState({
+            loading : false,
             questions : allQuestions,
             answers : allAnswers
         });
@@ -68,7 +72,7 @@ class CreateQuiz extends Component {
     }
 
     submitQuiz = () => {
-        this.setState({error : ''});
+        this.setState({error : '', loading : true});
         const {questions, answers, duration, name} = this.state;
         let jwt = isAuthenticated();
         let creator = jwt.user._id; 
@@ -85,10 +89,10 @@ class CreateQuiz extends Component {
         .then(res => res.json())
         .then(data => {
             if(data.error) {
-                this.setState({error : data.error});
+                this.setState({error : data.error, laoding : false});
                 return;
             }
-            this.setState({quizId : data.quizId, status : 'completed'})
+            this.setState({quizId : data.quizId, status : 'completed', loading : false})
         })
         .catch(err => console.log(err));
     }
@@ -119,6 +123,7 @@ class CreateQuiz extends Component {
                         </div>
                         <button disabled={this.state.sending}>CONTINUE</button>
                     </form>
+                    {this.state.loading && <div className="loading"></div>}
                 </div>
             )
         } else if(this.state.status === "fillingQuiz"){
@@ -136,15 +141,18 @@ class CreateQuiz extends Component {
                         {this.state.error && <p style={{textAlign:'center', color: 'red', fontWeight :'bold'}}>{this.state.error}</p>}
                         <button className={styles.button} disabled={this.state.sending} type="submit" >SUBMIT QUIZ</button>
                     </form>
+                    {this.state.loading && <div className="loading"></div>}
                 </div>
             );
     } else if(this.state.status === 'completed')
     return (
         <div className={styles.complete}>
-            <div>
+            <div style={{width : '100%'}}>
                 <p className={styles.head}>Quiz created successfully</p> 
-                <p>Link to take quiz is <a href={`https://quizza.live/#/${this.state.quizId}`}>{`https://quizza.live/${this.state.quizId}`}</a></p>
-                <p>Live leaderboard can be seen here : <a href={`https://quizza.live/${this.state.quizId}/leaderboard`}>{`https://quizza.live/${this.state.quizId}/leaderboard`}</a> </p>
+                <p>Link to take quiz is </p> 
+                <a href={`https://quizza.live/${this.state.quizId}`}>{`https://quizza.live/${this.state.quizId}`}</a>
+                <p>Live leaderboard can be seen here : </p> 
+                <a href={`https://quizza.live/${this.state.quizId}/leaderboard`}>{`https://quizza.live/${this.state.quizId}/leaderboard`}</a> 
             </div>
         </div>
     )

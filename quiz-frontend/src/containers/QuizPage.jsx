@@ -16,7 +16,8 @@ class QuizPage extends Component {
             questions : '',
             answers : [],
             submitted : false,
-            disableButton :  false
+            disableButton :  false,
+            loading : true
         }
     }
    
@@ -26,6 +27,7 @@ class QuizPage extends Component {
         .then(data => {
             const { created, name, duration,  creator } = data.quizDetails;
             this.setState({
+                loading : false,
                 quiz : {created, name, duration},
                 quizCreator : creator
             })
@@ -35,10 +37,12 @@ class QuizPage extends Component {
     
     fetchQuestions = (e) => {
         e.preventDefault()
+        this.setState({loading : true})
         fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/take`)
         .then(res => res.json())
         .then(data => {
             this.setState({
+                loading : false,
                 questions : data.questions,
                 starting: true,
                 modalHidden : true,
@@ -49,7 +53,7 @@ class QuizPage extends Component {
 
     submitAnswers = () => {
         this.saveAndNext();
-        this.setState({disableButton : true, submitted : true});
+        this.setState({disableButton : true, submitted : true, loading : true});
         let answers = this.state.answers;
         fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quizId}`, {
             method : 'POST',
@@ -63,6 +67,7 @@ class QuizPage extends Component {
         .then(data => {
                 this.setState({
                     starting : false,
+                    loading : false,
                     result : {
                         score : data.result.score,
                         max : data.maxScore,
@@ -116,6 +121,7 @@ class QuizPage extends Component {
                                 <button type="submit" >START</button>
                             </form>
                         </div>
+                        {this.state.loading && <div className="loading"></div>}
                     </div>
                 );
             }
@@ -153,6 +159,7 @@ class QuizPage extends Component {
                         </div>
                         {this.state.questions[this.state.currrentQuestion] ? <button disabled={this.state.disableButton}  className="btn-quiz" onClick = {this.saveAndNext}>NEXT</button> : <button disabled={this.state.disableButton} className="btn-quiz" onClick = {this.submitAnswers}> FINISH QUIZ</button> }
                         <form></form>
+                        {this.state.loading && <div className="loading"></div>}
                     </div>
                 )
             }
