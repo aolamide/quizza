@@ -10,6 +10,26 @@ button:hover, select:hover{
 }
 .popup {
     display : none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.58);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100vw;
+    height: 100%
+
+}
+.popup form {
+    box-shadow: 2px 2px 2px #07323f;
+    background-color : white;
+    padding: 20px;
+}
+.popup input, .popup button {
+    border: 2px solid #07323f;
+    padding: 10px;
+    margin: 7px
 }
 a{
     text-decoration: none;

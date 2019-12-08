@@ -88,8 +88,7 @@ class QuizPage extends Component {
    }
 
    saveAndNext = () => {
-       this.setState({disableButton : true});
-        this.state.answers.push(this.state.selectedAnswer);
+       this.setState({disableButton : true, answers : [...this.state.answers, this.state.selectedAnswer]});
         if(this.state.questions[this.state.currrentQuestion]){
             this.setState({selectedAnswer : null, currrentQuestion : this.state.currrentQuestion + 1, disableButton : false});
             document.querySelectorAll('.btn-answers').forEach(button => button.style.backgroundColor = '#ddd');
@@ -97,7 +96,7 @@ class QuizPage extends Component {
    }
 
     displayModal = () => {
-        this.popup.style.display = "block";
+        this.popup.style.display = "flex";
     }
 
     render(){
@@ -107,13 +106,15 @@ class QuizPage extends Component {
             const { name : creatorName } = this.state.quizCreator;
             if (!this.state.starting && !this.state.result) {
                 return (
-                    <div style={{padding : '10px'}}>
-                        <h1>{name}</h1>
-                        <p>Created by {creatorName}</p>
-                        <h2>Duration : {`${duration.min} minutes : ${duration.sec} seconds`}</h2>
-                        <h3>Created : {new Date(created).toDateString()}</h3>
+                    <div style={{padding : '10px', display : 'flex', flexDirection : 'column', justifyContent: 'center', alignItems : 'center', height : '100vh'}}>
                         <div>
-                            <button onClick = {this.displayModal}>TAKE QUIZ</button>
+                            <h1>{name}</h1>
+                            <p>Created by {creatorName}</p>
+                            <h2>Duration : {`${duration.min} min ${duration.sec.padStart(2, 0)} sec`}</h2>
+                            <h3>Created : {new Date(created).toDateString()}</h3>
+                            <div>
+                                <button onClick = {this.displayModal}>TAKE QUIZ</button>
+                            </div>
                         </div>  
                         <div ref = {elem => this.popup = elem} className="popup">
                             <form onSubmit= {this.fetchQuestions}>
