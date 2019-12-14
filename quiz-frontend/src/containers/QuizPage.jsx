@@ -51,8 +51,8 @@ class QuizPage extends Component {
         })
     }
 
-    submitAnswers = () => {
-        this.saveAndNext();
+    submitAnswers = async () => {
+        await this.saveAndNext();
         this.setState({disableButton : true, submitted : true, loading : true});
         let answers = this.state.answers;
         fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quizId}`, {
