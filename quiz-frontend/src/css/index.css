@@ -28,6 +28,10 @@ thead {
   color: white;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 /* Absolute Center Spinner */
 .loading {
   position: fixed;
