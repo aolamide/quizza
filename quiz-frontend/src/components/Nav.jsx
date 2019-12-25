@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {isAuthenticated} from '../auth';
+import logo from '../images/quizza.png';
 
 class Nav extends React.Component{
   constructor(){
@@ -27,13 +28,10 @@ class Nav extends React.Component{
     return (
       <nav style={{position : 'fixed', width : '100%', backgroundColor:'white', top : '0', zIndex : '800', padding: '5px', boxSizing :'border-box'}}>
           <ul>
-              <Link to='/'>
-               <li>Home</li>
+              <Link style={{paddingLeft: '15px'}} to='/'>
+               <img height='30px' width='50px' src={logo} alt="Quizza logo"/>
               </Link>
-              <span className="right">
-                <Link to='/howitworks'>
-                 <li>How It Works</li>
-               </Link>
+              <span className="right" style={{lineHeight:'30px'}}>
                {!this.state.user ? 
                <Link to='/login'>
                  <button>Login</button>
