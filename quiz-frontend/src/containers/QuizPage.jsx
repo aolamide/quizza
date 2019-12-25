@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Timer from '../components/Timer';
+import logo from '../images/quizza.png';
 
 class QuizPage extends Component {
     constructor({match}){
@@ -31,6 +32,8 @@ class QuizPage extends Component {
                 quiz : {created, name, duration},
                 quizCreator : creator
             })
+            this.min = duration.min;
+            this.sec = duration.sec;
             document.title = `${name} | Quizza`;
         })
     }
@@ -82,8 +85,14 @@ class QuizPage extends Component {
         this.setState({selectedAnswer : e.target.name});
         let buttons = document.querySelectorAll('.btn-answers');
         buttons.forEach(button => {
-            if(button.name === e.target.name) button.style.backgroundColor = 'green'
-            else button.style.backgroundColor = '#ddd';
+            if(button.name === e.target.name){
+                button.style.backgroundColor = 'green';
+                button.style.color = 'white';
+            } 
+            else {
+                button.style.backgroundColor = '#ddd';
+                button.style.color = '#07323f';
+            }
         })
    }
 
@@ -91,7 +100,10 @@ class QuizPage extends Component {
        this.setState({disableButton : true, answers : [...this.state.answers, this.state.selectedAnswer]});
         if(this.state.questions[this.state.currrentQuestion]){
             this.setState({selectedAnswer : null, currrentQuestion : this.state.currrentQuestion + 1, disableButton : false});
-            document.querySelectorAll('.btn-answers').forEach(button => button.style.backgroundColor = '#ddd');
+            document.querySelectorAll('.btn-answers').forEach(button => {
+                button.style.backgroundColor = '#ddd';
+                button.style.color = '#07323f'
+            });
         }
    }
 
@@ -99,6 +111,9 @@ class QuizPage extends Component {
         this.popup.style.display = "flex";
     }
 
+    closeModal = () => {
+        this.popup.style.display = 'none';
+    }
     render(){
         if(this.state.quiz) {
             const {user, result} = this.state;
@@ -106,32 +121,36 @@ class QuizPage extends Component {
             const { name : creatorName } = this.state.quizCreator;
             if (!this.state.starting && !this.state.result) {
                 return (
-                    <div style={{padding : '10px', display : 'flex', flexDirection : 'column', justifyContent: 'center', alignItems : 'center', height : '100vh'}}>
-                        <div>
-                            <h1>{name}</h1>
-                            <p>Created by {creatorName}</p>
-                            <h2>Duration : {`${duration.min} min ${duration.sec.padStart(2, 0)} sec`}</h2>
-                            <h3>Created : {new Date(created).toDateString()}</h3>
+                    <>
+                        <img src={logo} alt="Quizza logo" className='logo-page'/>
+                        <div style={{padding : '10px', display : 'flex', flexDirection : 'column', justifyContent: 'center', alignItems : 'center', height : '50vh', textAlign : 'center'}}>
                             <div>
-                                <button onClick = {this.displayModal}>TAKE QUIZ</button>
+                                <h1>{name}</h1>
+                                <p>Created by {creatorName} on {new Date(created).toDateString()} </p>
+                                <h2>Time Allowed : {`${duration.min} min ${duration.sec.padStart(2, 0)} sec`}</h2>
+                                <div>
+                                    <button className='btn-take' onClick = {this.displayModal}>TAKE QUIZ</button>
+                                </div>
+                            </div>  
+                            <div ref = {elem => this.popup = elem} className="popup">
+                                <button onClick={this.closeModal} className='btn-close-popup'>X</button>
+                                <form onSubmit= {this.fetchQuestions}>
+                                    <input required ref={elem => this.user = elem} minLength="3" type="text" placeholder="Enter Name"/>
+                                    <button type="submit" >START</button>
+                                </form>
                             </div>
-                        </div>  
-                        <div ref = {elem => this.popup = elem} className="popup">
-                            <form onSubmit= {this.fetchQuestions}>
-                                <input required ref={elem => this.user = elem} minLength="3" type="text" placeholder="Enter Name"/>
-                                <button type="submit" >START</button>
-                            </form>
+                            {this.state.loading && <div className="loading"></div>}
                         </div>
-                        {this.state.loading && <div className="loading"></div>}
-                    </div>
+                    </>
                 );
             }
             if(this.state.starting) {
                 return (
                     <div className="quiz">
-                        <Timer timeOver = {this.submitAnswers} min = {this.state.quiz.duration.min} sec = {this.state.quiz.duration.sec} submitted={this.state.submitted}/>
+                        <img style={{margin : '0px auto 0px'}} src={logo} alt="Quizza logo" className='logo-page'/>
+                        <Timer timeOver = {this.submitAnswers} min = {this.min} sec = {this.sec} submitted={this.state.submitted}/>
                         <div className="activeQuestion">Question {this.state.currrentQuestion} of {this.state.questions.length}</div>
-                        <div className="questionDisplay">
+                        <div className="bold questionDisplay">
                             <div>{this.state.questions[this.state.currrentQuestion - 1].title }</div>
                         </div>
                         <div className="option-row">

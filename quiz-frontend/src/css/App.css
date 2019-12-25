@@ -21,6 +21,14 @@ button:hover, select:hover{
     height: 100%
 
 }
+.btn-close-popup {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: transparent;
+    font-weight: 900;
+    color: white;
+}
 .popup form {
     box-shadow: 2px 2px 2px #07323f;
     background-color : white;
@@ -113,10 +121,22 @@ ul{
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 2px 2px 2px black, -2px -2px 2px black;
+    box-shadow: 2px 2px 2px black, -2px -2px 2px #07323f;
     border-radius: 8px;
     min-height: 100px;
     text-align: center;
+    color: #07323f;
+}
+.logo-page {
+    display: block;
+    margin: 20px auto 0;
+}
+.btn-take, .btn-quiz {
+    padding: 18px;
+    color: white;
+    background-color: #07323f;
+    font-weight: bold;
+    border-radius: 30px 8px;
 }
 .btn-answers {
     width: 100%;
@@ -125,32 +145,31 @@ ul{
     padding: 10px;
     border-radius : 8px;
     border: 2px solid grey;
+    color: #07323f;
 }
 .btn-quiz {
     float: right;
     margin-top: 5px;
     margin-right: 7px;
     min-width: 80px;
-    color: white;
-    padding: 10px;
-    background-color: darkolivegreen;
     border: none;
+    padding: 18px 45px;
 }
 .quiz {
-    padding-top: 70px;
     width: 70vw;
     margin: auto;
 }
 .activeQuestion {
-    margin: 8px;
+    margin: 10px;
     font-style: italic;
     font-weight: 700;
-    font-size: 1.02rem;
+    font-size: 1.2rem;
+    color: #2e697b;
 }
 
 @media screen and (max-width : 800px) {
     .quiz {
-        padding-top: 30px;
+        padding-top: 4px;
         width: 90vw;
         margin: auto;
     }
