@@ -56,18 +56,15 @@ ul{
 }
 
 /* CreateQuiz */
-#questions {
-    display: flex;
-    flex-wrap: wrap;
-}
 .question {
-    width: 48%;
+    width: 90%;
     margin: auto;
     margin-top : 20px;
     padding: 18px;
     box-sizing: border-box;
     background-color: brown;
     border-radius: 10px;
+    position: relative
 }
 .option-row {
     display: flex;
@@ -131,7 +128,7 @@ ul{
     display: block;
     margin: 20px auto 0;
 }
-.btn-take, .btn-quiz {
+.btn-take, .btn-quiz, .btn-quiz-next {
     padding: 18px;
     color: white;
     background-color: #07323f;
@@ -155,6 +152,11 @@ ul{
     border: none;
     padding: 18px 45px;
 }
+.btn-quiz-next {
+    display: block;
+    margin : 10px 40px 0 auto;
+    width: 100px;
+}
 .quiz {
     width: 70vw;
     margin: auto;
@@ -166,12 +168,58 @@ ul{
     font-size: 1.2rem;
     color: #2e697b;
 }
-
+.result-container {
+    width : 300px;
+    box-shadow : 2px 2px 2px #e7e7e7, -2px -2px 2px #e7e7e7;
+    margin : 20px auto 0px;
+    height: auto;
+    padding: 15px;
+    box-sizing: border-box;
+    color : darkcyan;
+}
+.result-container a{
+    color: lightsalmon;
+}
+.result-img {
+    margin: auto;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    background: url(../images/score.svg) no-repeat center center,  linear-gradient(to right, rgba(247, 205, 88, 0.7), rgba(88, 247, 144, 0.2));
+    background-size: 60px, cover;
+}
+.result-name {
+    font-size : 1.3rem
+}
+.result-percent-intro {
+    margin-bottom: 3px;
+    font-size: 1.1rem
+}
+.result-percent {
+    font-size : 3em;
+    font-weight: 800;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    color: brown
+}
+.result-score-intro {
+    margin-bottom: 3px;
+    font-size: 1.1rem;
+}
+.result-score {
+    margin-top: 7px;
+    margin-bottom: 3px;
+    font-size: 2em;
+    color: #a52a2abf;
+}
 @media screen and (max-width : 800px) {
     .quiz {
         padding-top: 4px;
         width: 90vw;
         margin: auto;
+    }
+    .btn-quiz-next {
+        margin : 10px 20px 0 auto;
     }
 }
 /* TIMER */

@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
 }
 
 .quizForm {
@@ -20,7 +20,8 @@
     border: 1px solid white;
     color: white;
     padding: 7px;
-    margin-left: 10px
+    margin-left: 10px;
+    width: 150px
 }
 .quizForm input[type=number] {
     width: 50px;
@@ -47,14 +48,13 @@
 }
 
 .quiz {
-    padding: 30px;
     padding-top: 60px;
 }
 
 .complete { 
     display: flex;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
     justify-content: center;
     text-align: center;
     padding: 20px;
@@ -63,4 +63,15 @@
 .complete a {
     color: burlywood;
     word-wrap: break-word;
+}
+
+.btnCopy {
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    padding: 7px;
+    background-color: darkgray;
+    color: white;
+    border-radius: 12px;
+    transition: opacity 1.3s;
 }

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import Timer from '../components/Timer';
 import logo from '../images/quizza.png';
 
@@ -185,10 +186,21 @@ class QuizPage extends Component {
             }
             if(this.state.result) {
                 return (
-                    <div style={{padding : '10px'}}>
-                        <p>{`${user}, your score is ${result.percent.toFixed(1)}%`}</p>
-                        <p>{`You got ${result.score} questions correctly out of ${result.max}.`}</p>
-                        <p>See the quiz leaderboard and see where you rank amongst all who have taken quiz <a href={`https://quizza.live/${this.state.quizId}/leaderboard`} target="_blank" rel="noopener noreferrer">LEADERBOARD</a></p>
+                    <div>
+                        <img src={logo} alt="Quizza logo" className='logo-page'/>
+                        <div className='result-container'>
+                            <div className='result-img'>
+
+                            </div>
+                            <div style={{textAlign : 'center'}}>
+                                <p className='result-name'>Hey, <span className='bold' style={{color: 'sienna'}}>{user}</span></p>
+                                <p className='result-percent-intro'>Your score for '<span className='bold'>{name}</span>' is </p>
+                                <p className='result-percent'>{result.percent.toFixed(1).split('.')[1] === '0' ? result.percent : result.percent.toFixed(1)}%</p>
+                                <p className='result-score-intro'>Correct Answers / Total Questions</p>
+                                <p className='result-score bold'>{result.score} / {result.max}</p>
+                                <p>See where you rank on the <Link to={`${this.state.quizId}/leaderboard`} target='_blank'>Quiz Leaderboard</Link></p>
+                            </div>
+                        </div>
                     </div>
                 )
             }
