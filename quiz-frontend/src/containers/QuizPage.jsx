@@ -19,7 +19,8 @@ class QuizPage extends Component {
             answers : [],
             submitted : false,
             disableButton :  false,
-            loading : true
+            loading : true, 
+            quizNotFound : false
         }
     }
    
@@ -27,19 +28,23 @@ class QuizPage extends Component {
         fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}`)
         .then(res => res.json())
         .then(data => {
-            const { created, name, duration,  creator } = data.quizDetails;
-            this.setState({
-                loading : false,
-                quiz : {created, name, duration},
-                quizCreator : creator
-            })
-            this.min = duration.min;
-            this.sec = duration.sec;
-            document.title = `${name} | Quizza`;
+            if(data.error) {
+                this.setState({quizNotFound : true, loading : false})
+            } else {
+                const { created, name, duration,  creator } = data.quizDetails;
+                this.setState({
+                    loading : false,
+                    quiz : {created, name, duration},
+                    quizCreator : creator
+                })
+                this.min = duration.min;
+                this.sec = duration.sec;
+                document.title = `${name} | Quizza`;
+            }
         })
     }
     
-    fetchQuestions = (e) => {
+    fetchQuestions = e => {
         e.preventDefault()
         this.setState({loading : true})
         fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/take`)
@@ -52,6 +57,18 @@ class QuizPage extends Component {
                 modalHidden : true,
                 user : this.user.value
             })
+        })
+    }
+    handleQuestionChange = num => {
+        this.setState({currrentQuestion : num, selectedAnswer : this.state.answers[num - 1]})
+        document.querySelectorAll('.btn-answers').forEach(button => {
+            if(button.name === this.state.answers[num - 1]) {
+                button.style.backgroundColor = 'green';
+                button.style.color = 'white';
+            } else {
+                button.style.backgroundColor = '#ddd';
+                button.style.color = '#07323f'
+            }
         })
     }
 
@@ -82,8 +99,12 @@ class QuizPage extends Component {
         )
     }
 
-   saveAnswer = (e) => {
-        this.setState({selectedAnswer : e.target.name});
+   saveAnswer = e => {
+        this.setState({selectedAnswer : e.target.name}, () => {
+            let answers = [...this.state.answers];
+            answers[this.state.currrentQuestion - 1] = this.state.selectedAnswer;
+            this.setState({answers})
+        });
         let buttons = document.querySelectorAll('.btn-answers');
         buttons.forEach(button => {
             if(button.name === e.target.name){
@@ -97,15 +118,19 @@ class QuizPage extends Component {
         })
    }
 
-   saveAndNext = () => {
-       this.setState({disableButton : true, answers : [...this.state.answers, this.state.selectedAnswer]});
-        if(this.state.questions[this.state.currrentQuestion]){
-            this.setState({selectedAnswer : null, currrentQuestion : this.state.currrentQuestion + 1, disableButton : false});
-            document.querySelectorAll('.btn-answers').forEach(button => {
+   saveAndNext = async() => {
+    if(this.state.questions[this.state.currrentQuestion]){
+        await this.setState({currrentQuestion : this.state.currrentQuestion + 1, disableButton : false}, () => this.setState({selectedAnswer : this.state.answers[this.state.currrentQuestion - 1]}));
+        document.querySelectorAll('.btn-answers').forEach(button => {
+            if(button.name === this.state.answers[this.state.currrentQuestion - 1]){
+                button.style.backgroundColor = 'green';
+                button.style.color = 'white';
+            } else {
                 button.style.backgroundColor = '#ddd';
                 button.style.color = '#07323f'
-            });
-        }
+            }
+        });
+    }
    }
 
     displayModal = () => {
@@ -150,7 +175,12 @@ class QuizPage extends Component {
                     <div className="quiz">
                         <img style={{margin : '0px auto 0px'}} src={logo} alt="Quizza logo" className='logo-page'/>
                         <Timer timeOver = {this.submitAnswers} min = {this.min} sec = {this.sec} submitted={this.state.submitted}/>
-                        <div className="activeQuestion">Question {this.state.currrentQuestion} of {this.state.questions.length}</div>
+                        <div style={{display : 'flex', flexWrap : 'wrap', margin : 'auto', justifyContent : 'center'}}>
+                            {Array.from({length : this.state.questions.length}, (item, i) => {
+                                return <button title={`Question ${i + 1}`} onClick = {() => this.handleQuestionChange(i+1)} key ={i} style={{margin : '10px', backgroundColor : this.state.answers[i] ? 'green' : 'red', color : 'white', width : '30px', height : '30px'}}>{i + 1}</button>
+                            })}
+                        </div>
+                        <div className="activeQuestion bold">Question {this.state.currrentQuestion} of {this.state.questions.length}</div>
                         <div className="bold questionDisplay">
                             <div>{this.state.questions[this.state.currrentQuestion - 1].title }</div>
                         </div>
@@ -205,7 +235,16 @@ class QuizPage extends Component {
                 )
             }
         }
-        return <div></div>
+        else if(this.state.quizNotFound) {
+            return (
+                <div>
+                    <img src={logo} alt="Quizza logo" className='logo-page'/>
+                    <h1 className='textCenter'>Quiz Not Found</h1>
+                    <h3 className='textCenter'>Please check the link or try again.</h3>
+                </div>
+            )
+        }
+        return <div className='loading'></div>
     }
 }
 

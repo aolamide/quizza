@@ -31,6 +31,9 @@ thead {
 .bold {
   font-weight: bold;
 }
+.textCenter {
+  text-align: center;
+}
 
 /* Absolute Center Spinner */
 .loading {
