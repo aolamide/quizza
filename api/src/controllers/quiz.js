@@ -40,6 +40,7 @@ const quizControllers = {
     getAllQuiz(req, res) {
         Quiz.find()
         .populate('creator', '_id name email')
+        .select('-answers -questions')
         .then(quizzes => {
             res.json({ quizzes });
         })
