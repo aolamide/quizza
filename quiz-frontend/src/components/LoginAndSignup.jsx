@@ -28,7 +28,7 @@ class LoginAndSignup extends React.Component {
     }
 
     register = () => {
-        fetch('https://lalaquiz.herokuapp.com/api/v1/register', {
+        fetch('http://localhost:5050/api/v1/register', {
             method : 'POST',
             headers : {
                 Accept : 'application/json',
@@ -43,14 +43,13 @@ class LoginAndSignup extends React.Component {
         .then(res => res.json())
         .then(data => {
             if(data.error) this.setState({error : data.error})
-            else this.setState({successMessage : data.message})
+            else this.setState({successMessage : data.message}, () => this.form.reset());
             this.setState({loading : false});
-            this.form.reset();
         })
     }
 
     login = () => {
-        fetch('https://lalaquiz.herokuapp.com/api/v1/login', {
+        fetch('http://localhost:5050/api/v1/login', {
             method : 'POST',
             headers : {
                 Accept : 'application/json',
@@ -63,16 +62,43 @@ class LoginAndSignup extends React.Component {
         })
         .then(res => res.json())
         .then(data => {
-            if(data.error) this.setState({error : data.error})
+            if(data.error) this.setState({error : data.error, loading : false})
             else {
                 authenticate(data, () => {
                     this.setState({redirectToReferer : true});
                 })
             }
-            this.setState({loading : false});
         })
     }
+    requestPasswordReset = (e) => {
+        e.preventDefault();
+        this.setState({loading : true, resetError : '', resetMessage :''});
+        fetch('http://localhost:5050/api/v1/forgotPassword', {
+            method : 'POST',
+            headers : {
+                Accept : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                email : this.email.value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.error) this.setState({resetError : data.error})
+            else {
+                this.setState({resetMessage : data.message})
+            }
+            this.setState({loading : false})
+        })
+    }
+    displayModal = () => {
+        this.popup.style.display = "flex";
+    }
 
+    closeModal = () => {
+        this.popup.style.display = 'none';
+    }
     submitForm = e => {
         this.setState({loading : true})
         e.preventDefault();
@@ -85,34 +111,51 @@ class LoginAndSignup extends React.Component {
             return <Redirect to={from} />
         }
         return (
-            <div className='auth'>
-                <form ref={form => this.form = form} onSubmit={this.submitForm}>
-                    {this.state.error && <p style={{color : 'red', textAlign: 'center'}}>{this.state.error}</p>}
-                    {this.state.successMessage && <p style={{color: 'green', textAlign: 'center'}}>{this.state.successMessage}</p>}
-                    {this.state.pageStatus === 'register' &&
+            <>
+                <div className='auth'>
+                    <form ref={form => this.form = form} onSubmit={this.submitForm}>
+                        {this.state.error && <p style={{color : 'red', textAlign: 'center'}}>{this.state.error}</p>}
+                        {this.state.successMessage && <p style={{color: 'green', textAlign: 'center'}}>{this.state.successMessage}</p>}
+                        {this.state.pageStatus === 'register' &&
+                            <div className="formgroup">
+                                <label htmlFor="name">Name</label>
+                                <input required id="name" onChange={this.onInputChange('name')} type="text" placeholder="John Doe"/>
+                            </div>
+                        }
                         <div className="formgroup">
-                            <label htmlFor="name">Name</label>
-                            <input required id="name" onChange={this.onInputChange('name')} type="text" placeholder="John Doe"/>
+                            <label htmlFor="email">Email</label>
+                            <input required onChange={this.onInputChange('email')} type="email" id="email" placeholder="johndoe@gmail.com"/>
+                        </div> 
+                        <div className="formgroup">
+                            <label htmlFor="password">Password</label>
+                            <input required id="password" onChange={this.onInputChange('password')} type="password" placeholder="password"/>
                         </div>
-                    }
-                    <div className="formgroup">
-                        <label htmlFor="email">Email</label>
-                        <input required onChange={this.onInputChange('email')} type="email" id="email" placeholder="johndoe@gmail.com"/>
-                    </div> 
-                    <div className="formgroup">
-                        <label htmlFor="password">Password</label>
-                        <input required id="password" onChange={this.onInputChange('password')} type="password" placeholder="password"/>
-                    </div>
-                    {
-                        this.state.loading ? 
-                        <div className="loader"></div> 
-                        : 
-                        <button style={{color : 'white', backgroundColor :'#07323f', padding:'8px'}} type="submit">{this.state.pageStatus === 'login' ? 'Login' : 'Register'}</button> 
-                    }
-                    <p style={{textAlign: 'center', marginBottom : '5px'}}>{this.state.pageStatus === 'login' ? 'Don\'t have an account ?' : 'Already Registered ?'}</p>
-                    <button className='btn-auth' type="button" onClick={this.changeFormState}>{this.state.pageStatus === 'login' ? 'Register' : 'Login'}</button>
-                </form>
-            </div>
+                        <div>{
+                            this.state.pageStatus === 'login' && 
+                            <button type='button' onClick={this.displayModal} className='btnForgot bold'>Forgot Password?</button>
+                        }</div>
+                        <div>{
+                            this.state.loading ? 
+                            <div className="loader"></div> 
+                            : 
+                            <button style={{color : 'white', backgroundColor :'#07323f', padding:'8px'}} type="submit">{this.state.pageStatus === 'login' ? 'Login' : 'Register'}</button> 
+                        }</div>
+                        <p style={{textAlign: 'center', marginBottom : '5px'}}>{this.state.pageStatus === 'login' ? 'Don\'t have an account ?' : 'Already Registered ?'}</p>
+                        <button className='btn-auth' type="button" onClick={this.changeFormState}>{this.state.pageStatus === 'login' ? 'Register' : 'Login'}</button>
+                    </form>
+                </div>
+                <div ref = {elem => this.popup = elem} className="popup">
+                    <button type='button' onClick={this.closeModal} className='btn-close-popup'>X</button>
+                    <form onSubmit={this.requestPasswordReset}>
+                        <p>Enter your registered email address and we will send you a link to reset your password</p>
+                        <input style={{width : '200px'}} required ref={elem => this.email = elem} type="email" placeholder="me@example.com"/>
+                        <button type="submit" >Send password reset email</button>
+                        <p>{this.state.resetError || ''}</p>
+                        <p>{this.state.resetMessage || ''}</p>
+                    </form>
+                </div>
+                {this.state.loading && <div className="loading"></div> }
+            </>
         )
     }
 }

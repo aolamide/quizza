@@ -305,6 +305,7 @@ nav button {
     width: 500px;
     box-shadow: 2px 2px 2px grey, -2px -2px 2px grey;
     padding: 10px;
+    position: relative;
 }
 
 .formgroup {
@@ -319,6 +320,12 @@ nav button {
     display: block;
     width: 80px;
     margin: auto;
+}
+.auth button.btnForgot {
+    width : auto;
+    margin : 0 10px 3px auto;
+    background: transparent;
+    color: #07323f;
 }
 
 .formgroup input {

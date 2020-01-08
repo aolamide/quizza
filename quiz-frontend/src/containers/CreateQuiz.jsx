@@ -61,7 +61,7 @@ class CreateQuiz extends Component {
         let jwt = isAuthenticated();
         let creator = jwt.user._id; 
         let token = jwt.token;
-        fetch('https://lalaquiz.herokuapp.com/api/v1/newquiz', {
+        fetch('http://localhost:5050/api/v1/newquiz', {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -73,7 +73,7 @@ class CreateQuiz extends Component {
         .then(res => res.json())
         .then(data => {
             if(data.error) {
-                this.setState({error : data.error, laoding : false});
+                this.setState({error : data.error, loading : false});
                 return;
             }
             this.setState({quizId : data.quizId, status : 'completed', loading : false})
@@ -181,7 +181,7 @@ class CreateQuiz extends Component {
                             </div>
                             <div>
                                 <label htmlFor='qnos'>NUMBER OF QUESTIONS :</label> 
-                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='3' />
+                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='1' />
                             </div>
                             <div>
                                 <label htmlFor='duration-minutes'>DURATION : </label> 

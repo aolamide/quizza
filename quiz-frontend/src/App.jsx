@@ -9,6 +9,7 @@ import LeaderBoard from './containers/LeaderBoard';
 import LoginAndSignup from './components/LoginAndSignup';
 import { isAuthenticated } from './auth';
 import './css/App.css';
+import PasswordResetPage from './containers/PasswordResetPage';
 
 
 const NavRoute = ({exact, path, component: Component}) => (
@@ -44,6 +45,7 @@ function App() {
             <Route exact path='/login' component={LoginAndSignup} />
             <Route exact path='/:quizId' component={QuizPage} />
             <NavRoute path='/:quizId/leaderboard' component={LeaderBoard} />
+            <Route path='/reset/:token' component={PasswordResetPage} />
         </Switch>
       </Router>
   );
