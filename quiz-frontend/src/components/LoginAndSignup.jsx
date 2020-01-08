@@ -28,7 +28,7 @@ class LoginAndSignup extends React.Component {
     }
 
     register = () => {
-        fetch('http://localhost:5050/api/v1/register', {
+        fetch('https://lalaquiz.herokuapp.com/api/v1/register', {
             method : 'POST',
             headers : {
                 Accept : 'application/json',
@@ -49,7 +49,7 @@ class LoginAndSignup extends React.Component {
     }
 
     login = () => {
-        fetch('http://localhost:5050/api/v1/login', {
+        fetch('https://lalaquiz.herokuapp.com/api/v1/login', {
             method : 'POST',
             headers : {
                 Accept : 'application/json',
@@ -73,7 +73,7 @@ class LoginAndSignup extends React.Component {
     requestPasswordReset = (e) => {
         e.preventDefault();
         this.setState({loading : true, resetError : '', resetMessage :''});
-        fetch('http://localhost:5050/api/v1/forgotPassword', {
+        fetch('https://lalaquiz.herokuapp.com/api/v1/forgotPassword', {
             method : 'POST',
             headers : {
                 Accept : 'application/json',

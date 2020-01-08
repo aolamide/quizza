@@ -15,7 +15,7 @@ class PasswordResetPage extends Component {
         else {
             this.setState({loading : true})
             const token = this.props.match.params.token;
-            fetch(`http://localhost:5050/api/v1/updatePassword?token=${token}`, {
+            fetch(`https://lalaquiz.herokuapp.com/api/v1/updatePassword?token=${token}`, {
                 method : 'PUT',
                 headers : {
                     Accept : 'applicatio/jsoon',
@@ -39,7 +39,7 @@ class PasswordResetPage extends Component {
     }
     componentDidMount() {
         const token = this.props.match.params.token;
-        fetch(`http://localhost:5050/api/v1/reset?token=${token}`)
+        fetch(`https://lalaquiz.herokuapp.com/api/v1/reset?token=${token}`)
         .then(res => res.json())
         .then(data => {
             if(data.error) this.setState({error : data.error})
