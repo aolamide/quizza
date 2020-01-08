@@ -9,7 +9,7 @@ const quizControllers = {
                 console.log(err);
                 return res.status(500).json({error :'Quiz not saved'});
             }
-            return res.status(200).json({success : 'quiz created successfully', quizId : result.id});
+            return res.status(200).json({success : 'Quiz created successfully', quizId : result.id});
         });
     }, 
     submitQuiz(req, res) {

@@ -16,7 +16,9 @@ const userSchema = new mongoose.Schema({
     joined : {
         type: Date,
         default : Date.now
-    }
+    },
+    resetPasswordToken : String,
+    resetExpires : Date
 });
 
 userSchema.virtual('password')

@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import quizControllers from '../controllers/quiz';
-import { confirmUser, hasAuthorization, requireSignIn } from "../controllers/auth";
+import { confirmUser, hasAuthorization, requireSignIn, tokenValid } from "../controllers/auth";
 const router = Router();
 const { createQuiz, submitQuiz, getAllQuiz, deleteQuiz, getSingleQuizIntro, getSingleQuizQuestions, getQuizLeaderBoard }  = quizControllers;
 
-router.post('/newquiz', confirmUser,  requireSignIn, hasAuthorization, createQuiz);
+router.post('/newquiz', confirmUser,  requireSignIn, tokenValid, hasAuthorization, createQuiz);
 
 router.post('/submit/:quizId', submitQuiz);
 

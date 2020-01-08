@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import expressJwt from 'express-jwt';
 import User from '../models/user';
+import crypto from 'crypto';
+import sendMail from '../resetMail';
 
 dotenv.config();
 
@@ -43,7 +45,7 @@ const signIn = (req, res) => {
 
         //if user is found, authenticate
         //generate a token with user id and secret
-        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET);
+        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn : 30});
     
         //return response with user and token to frontend client
         const { _id, name, email } = user;
@@ -51,8 +53,12 @@ const signIn = (req, res) => {
     })
     
 }
-
-
+const tokenValid = (err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+      res.status(401).json({error :'Session expired, please relogin'});
+    }
+    next();
+}
 const requireSignIn = expressJwt({
     //if token is valid, express jwt appends the verified users id in an auth key to the request object
     secret : process.env.JWT_SECRET,
@@ -83,4 +89,47 @@ const hasAuthorization = (req, res, next) => {
     next()
 }
 
-export { signUp, signIn, requireSignIn, confirmUser, hasAuthorization };
+const forgotPassword = (req, res) => {
+    User.findOne({email : req.body.email})
+    .exec((err, user) => {
+        if(err || !user) return res.status(403).json({error : 'Email not registered on platform'})
+        const token = crypto.randomBytes(20).toString('hex');
+        user.resetPasswordToken = token;
+        user.resetExpires = Date.now() + 1000 * 60 * 15;
+        user.save((err, user) => {
+            if(err) res.status(400).json({error : 'An error occured, please try again'})
+            sendMail(user.email, user.resetPasswordToken)
+            .then(info => {
+                console.log(info.response);
+                res.json({user, message : 'Password reset link has been sent successfully'})
+            })
+            .catch(err => res.status(400).json({error : 'Email could not be sent, please try again'}))
+        })
+    })
+}
+
+const confirmResetLink = (req, res) => {
+    console.log(req.query)
+    User.findOne({resetPasswordToken : req.query.token, resetExpires : {$gt : Date.now()}})
+    .select('name')
+    .exec((err, user) => {
+        if(err || !user) res.status(403).json({error : 'Password reset link is invalid or has expired'})
+        else res.json({user})
+    })
+}
+
+const updatePassword = (req, res) => {
+    if(req.body.password.trim().length < 7) return res.status(400).json({error : 'Password must be at least 7 characters long'});
+    User.findOne({resetPasswordToken : req.query.token, name : req.body.name})
+    .exec((err, user) => {
+        if(err || !user) return res.status(403).json({error : 'Link has expired'})
+        user.resetExpires = null;
+        user.resetPasswordToken = null;
+        user.password = req.body.password;
+        user.save((err, user) => {
+            if(err) return res.status(400).json({error : 'An error has occured'})
+            return res.json({meessage : 'password updated successfully, proceed to login'})
+        })
+    })
+}
+export { signUp, signIn, requireSignIn, tokenValid, confirmUser, hasAuthorization, forgotPassword, confirmResetLink, updatePassword };
