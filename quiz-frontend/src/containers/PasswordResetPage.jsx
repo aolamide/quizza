@@ -51,7 +51,8 @@ class PasswordResetPage extends Component {
         .catch(err => console.log('error'))
     }
     render() {
-        if(this.state.user) return (
+        if(this.state.successMessage) return <div>{this.state.successMessage}</div>
+        else if(this.state.user) return (
             <div className='auth'>
                 <form ref={form => this.form = form} onSubmit={this.submitForm}>
                     <div className="formgroup">
@@ -73,7 +74,6 @@ class PasswordResetPage extends Component {
                 {this.state.loading && <div className="loading"></div> }
             </div>
         )
-        else if(this.state.successMessage) return <div>{this.state.successMessage}</div>
         else if(this.state.error) return <div>{this.state.error}</div>
         return <div className="loading"></div>
     }
