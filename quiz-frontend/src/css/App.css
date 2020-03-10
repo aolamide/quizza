@@ -254,7 +254,13 @@ nav button {
     float: right;
     margin-right: 10px;
 }
-
+.dropdown {
+    -webkit-user-select : none;
+    -moz-user-select : none;
+    -ms-user-select : none;
+    -kthml-user-select : none;
+    user-select: none;
+}
 .dropdown-content {
     visibility: hidden;
     width: 120px;
