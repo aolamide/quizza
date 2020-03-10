@@ -1,14 +1,17 @@
 import Quiz from '../models/quiz';
+import sendQuizMail from '../quizMail';
 
 
 const quizControllers = {
     createQuiz(req, res) {
+        if(req.body.questions.length < 5) return res.status(500).json({error : 'Minimum of five questions is required'})
         const newQuiz = new Quiz(req.body);
         newQuiz.save((err, result) => {
             if(err || !result) {
                 console.log(err);
                 return res.status(500).json({error :'Quiz not saved'});
             }
+            sendQuizMail(result.id, result.name, req.profile.email, req.profile.name);
             return res.status(200).json({success : 'Quiz created successfully', quizId : result.id});
         });
     }, 
