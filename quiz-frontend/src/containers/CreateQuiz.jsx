@@ -181,7 +181,7 @@ class CreateQuiz extends Component {
                             </div>
                             <div>
                                 <label htmlFor='qnos'>NUMBER OF QUESTIONS :</label> 
-                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='1' />
+                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='5' />
                             </div>
                             <div>
                                 <label htmlFor='duration-minutes'>DURATION : </label> 
