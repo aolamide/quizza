@@ -45,7 +45,7 @@ const signIn = (req, res) => {
 
         //if user is found, authenticate
         //generate a token with user id and secret
-        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn : 30});
+        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn : 86400});
     
         //return response with user and token to frontend client
         const { _id, name, email } = user;
@@ -94,16 +94,16 @@ const forgotPassword = (req, res) => {
     .exec((err, user) => {
         if(err || !user) return res.status(403).json({error : 'Email not registered on platform'})
         const token = crypto.randomBytes(20).toString('hex');
+        console.log(token)
         user.resetPasswordToken = token;
         user.resetExpires = Date.now() + 1000 * 60 * 15;
         user.save((err, user) => {
-            if(err) res.status(400).json({error : 'An error occured, please try again'})
+            if(err) res.status(400).json({error : 'An error occured, please try again'});
             sendMail(user.email, user.resetPasswordToken)
             .then(info => {
-                console.log(info.response);
                 res.json({user, message : 'Password reset link has been sent successfully'})
             })
-            .catch(err => res.status(400).json({error : 'Email could not be sent, please try again'}))
+            .catch(err => res.status(400).json({error : err}))
         })
     })
 }
@@ -128,7 +128,7 @@ const updatePassword = (req, res) => {
         user.password = req.body.password;
         user.save((err, user) => {
             if(err) return res.status(400).json({error : 'An error has occured'})
-            return res.json({meessage : 'password updated successfully, proceed to login'})
+            return res.json({message : 'password updated successfully, proceed to login'})
         })
     })
 }
