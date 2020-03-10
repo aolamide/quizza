@@ -4,7 +4,8 @@ class PasswordResetPage extends Component {
     state = {
         loading : true,
         password : '',
-        cpassword : ''
+        cpassword : '',
+        successMessage : ''
     }
     submitForm = e => {
         this.setState({validationnError : ''})
@@ -18,7 +19,7 @@ class PasswordResetPage extends Component {
             fetch(`https://lalaquiz.herokuapp.com/api/v1/updatePassword?token=${token}`, {
                 method : 'PUT',
                 headers : {
-                    Accept : 'applicatio/jsoon',
+                    Accept : 'application/json',
                     'Content-Type' : 'application/json'
                 },
                 body : JSON.stringify({password, name : this.state.user.name})
@@ -52,7 +53,7 @@ class PasswordResetPage extends Component {
     }
     render() {
         if(this.state.successMessage) return <div>{this.state.successMessage}</div>
-        else if(this.state.user) return (
+        else if(!this.state.successMessage) return (
             <div className='auth'>
                 <form ref={form => this.form = form} onSubmit={this.submitForm}>
                     <div className="formgroup">
