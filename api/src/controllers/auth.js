@@ -80,7 +80,6 @@ const confirmUser = (req, res, next) => {
 
 const hasAuthorization = (req, res, next) => {
     const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
-    console.log('auth', req.auth._id, 'profile', req.profile._id);
     if(!authorized) {
         return res.status(403).json({
             error : "User is not authorized to perform this action"

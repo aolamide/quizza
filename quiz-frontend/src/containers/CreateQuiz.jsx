@@ -29,7 +29,8 @@ class CreateQuiz extends Component {
         sec : '',
         error : '',
         loading : false,
-        linkCopied : false
+        linkCopied : false,
+        privateBoard : false
     }
     saveDetails = (e) => {
         e.preventDefault();
@@ -58,7 +59,7 @@ class CreateQuiz extends Component {
             this.setState({error : 'Please fill all questions, options and answers correctly', loading : false})
             return;
         }
-        const {questions, answers, duration, name} = this.state;
+        const {questions, answers, duration, name, privateBoard} = this.state;
         let jwt = isAuthenticated();
         let creator = jwt.user._id; 
         let token = jwt.token;
@@ -69,7 +70,7 @@ class CreateQuiz extends Component {
                 'Content-Type': 'application/json',
                 Authorization : `Bearer ${token}`
             },
-            body: JSON.stringify({questions, answers, creator, duration, name}),
+            body: JSON.stringify({questions, answers, creator, duration, name, privateBoard}),
         })
         .then(res => res.json())
         .then(data => {
@@ -114,6 +115,9 @@ class CreateQuiz extends Component {
     }
     handleInput = name => e => {
         this.setState({[name] : e.target.value})
+    }
+    togglePrivateBoard = e => {
+        this.setState({privateBoard : e.target.checked})
     }
     inputsAreVerified = () => {
         let { answer : ans, title, optionA, optionB, optionC, optionD } = this.state;
@@ -182,12 +186,15 @@ class CreateQuiz extends Component {
                             </div>
                             <div>
                                 <label htmlFor='qnos'>NUMBER OF QUESTIONS :</label> 
-                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='1' />
+                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='5' />
                             </div>
                             <div>
                                 <label htmlFor='duration-minutes'>DURATION : </label> 
                                 <input onChange={this.handleInput('min')} required id="duration-minutes" type="number" max="60" placeholder="MM"/> :
                                 <input onChange={this.handleInput('sec')} required id="duration-seconds" type="number" max="59" placeholder="SS"/>
+                            </div>
+                            <div>
+                                <input onChange={this.togglePrivateBoard} style={{width : 'auto'}} type="checkbox" id="private-lead"/><label htmlFor="private-lead">Private leaderboard <em>(leaderboard would be visible to only you)</em></label>
                             </div>
                             <button disabled={this.state.sending}>CONTINUE</button>
                         </form>

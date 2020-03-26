@@ -1,5 +1,9 @@
 import Quiz from '../models/quiz';
 import sendQuizMail from '../quizMail';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 
 const quizControllers = {
@@ -56,21 +60,32 @@ const quizControllers = {
             if (err || !quiz) return res.status(404).json({
                 error : 'Quiz not found'
             })
-            const {name, creator, created, duration, expires, questions} = quiz;
+            const {name, creator, created, duration, expires, questions, privateBoard} = quiz;
             const noOfQuestions = questions.length; 
-            let quizDetails = { name, created, creator, duration, expires, noOfQuestions};
+            let quizDetails = { name, created, creator, duration, expires, noOfQuestions, privateBoard};
             return res.json({quizDetails});
         });
     },
     getQuizLeaderBoard (req, res) {
         Quiz.findOne({id : req.params.quizId })
         .populate('creator', '_id name email')
-        .select('name takenBy created creator')
+        .select('name takenBy created creator privateBoard')
         .exec((err, quiz) => {
             if (err || !quiz) return res.status(404).json({
                 error : 'Quiz not found'
             })
-            return res.json(quiz);
+            if(!quiz.privateBoard) return res.json(quiz);
+            else {
+                //verify user that is logged in
+                if(!req.body.token) return res.status(400).json({
+                    error : 'Only the creator of this quiz is authorized to view the leaderboard. Please log in if you are the creator of the quiz.'
+                })
+                const verified = jwt.verify(req.body.token, process.env.JWT_SECRET);
+                if(verified._id != quiz.creator._id) return res.status(400).json({
+                    error : 'Only the cretor of the quiz is authorized to view the leaderboard. Please log in if you are the creator of the quiz.'
+                })
+                return res.json(quiz)
+            }
         });
     },
     getSingleQuizQuestions(req,res) {

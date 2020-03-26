@@ -14,7 +14,7 @@ router.delete('/quiz/delete/:quizId', deleteQuiz);
 router.get('/quiz/:quizId', getSingleQuizIntro);
 router.get('/quiz/:quizId/take', getSingleQuizQuestions );
 
-router.get('/quiz/:quizId/leaderboard', getQuizLeaderBoard);
+router.post('/quiz/:quizId/leaderboard', getQuizLeaderBoard);
 
 
 export default router;

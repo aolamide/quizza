@@ -1,6 +1,7 @@
 import React from 'react';
 import API_BASE from '../apiBase.js';
 import {Link} from 'react-router-dom';
+import { isAuthenticated } from '../auth';
 
 class LeaderBoard extends React.Component {
     constructor({match}){
@@ -15,7 +16,17 @@ class LeaderBoard extends React.Component {
     }
    
     componentDidMount() {
-        fetch(`${API_BASE}/quiz/${this.state.quizId}/leaderboard`)
+        let auth = isAuthenticated();
+        let token = '';
+        if(auth){ token = auth.token};
+        fetch(`${API_BASE}/quiz/${this.state.quizId}/leaderboard`, {
+            method : 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify({token})
+        })
         .then(res => res.json())
         .then(quiz => {
             if(!quiz.error) {
@@ -28,7 +39,7 @@ class LeaderBoard extends React.Component {
                 document.title = `${name} Leaderboard | Quizza`;
             }
             else {
-                this.setState({loading : false, noResult : true})
+                this.setState({loading : false, noResult : true, error : quiz.error})
             }
         })
     }
@@ -74,9 +85,8 @@ class LeaderBoard extends React.Component {
         )
         }
         else if(this.state.noResult) return (
-            <div style={{marginTop : '80px'}}>
-                <h3>Quiz Not Found </h3>
-                <p>This quiz might have expired</p>
+            <div className='textCenter' style={{marginTop : '140px'}}>
+                <h3>{this.state.error} </h3>
             </div>
         )
         return <div></div>

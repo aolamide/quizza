@@ -26,6 +26,10 @@ const quizSchema = new mongoose.Schema({
             score : String
         }
     ],
+    privateBoard : {
+        type : Boolean,
+        default : false
+    },
     duration : Object
 });
 
