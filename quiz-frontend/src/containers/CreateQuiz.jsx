@@ -3,7 +3,8 @@ import Question from '../components/Question';
 import styles from '../css/createquiz.module.css';
 import { isAuthenticated } from '../auth';
 import logo from '../images/quizza.png';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import API_BASE from '../apiBase.js';
 
 
 class CreateQuiz extends Component {
@@ -61,7 +62,7 @@ class CreateQuiz extends Component {
         let jwt = isAuthenticated();
         let creator = jwt.user._id; 
         let token = jwt.token;
-        fetch('https://lalaquiz.herokuapp.com/api/v1/newquiz', {
+        fetch(`${API_BASE}/newquiz`, {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -181,7 +182,7 @@ class CreateQuiz extends Component {
                             </div>
                             <div>
                                 <label htmlFor='qnos'>NUMBER OF QUESTIONS :</label> 
-                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='5' />
+                                <input onChange={this.handleInput('noOfQuestions')} required id="qnos" type="number" min='1' />
                             </div>
                             <div>
                                 <label htmlFor='duration-minutes'>DURATION : </label> 
@@ -200,7 +201,7 @@ class CreateQuiz extends Component {
                     <p className={styles.head}>{this.state.name}</p>
                     <div style={{display : 'flex', flexWrap : 'wrap', margin : 'auto', justifyContent : 'center'}}>
                         {Array.from({length : this.state.noOfQuestions}, (item, i) => {
-                            return <button onClick = {() => this.handleQuestionChange(i+1)} key ={i} style={{margin : '10px', backgroundColor : this.state.verifiedQuestions.includes(i + 1) ? 'green' : 'red', color : 'white', width : '30px', height : '30px'}}>{i + 1}</button>
+                            return <button onClick = {() => this.handleQuestionChange(i+1)} key ={i} style={{margin : '10px', backgroundColor : this.state.verifiedQuestions.includes(i + 1) ? 'green' : 'red', color : 'white', width : '30px', height : '30px', border : this.state.questionFilling === i + 1 ? '3px solid rgba(35, 173, 255, 1)' : '' }}>{i + 1}</button>
                         })}
                     </div>
                     <form ref={elem => this.form = elem} onSubmit={this.submitQuiz}>

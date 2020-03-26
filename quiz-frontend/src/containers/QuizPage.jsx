@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import Timer from '../components/Timer';
 import logo from '../images/quizza.png';
+import API_BASE from '../apiBase.js';
 
 class QuizPage extends Component {
     constructor({match}){
@@ -25,16 +26,16 @@ class QuizPage extends Component {
     }
    
     componentDidMount() {
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}`)
+        fetch(`${API_BASE}/quiz/${this.state.quizId}`)
         .then(res => res.json())
         .then(data => {
             if(data.error) {
                 this.setState({quizNotFound : true, loading : false})
             } else {
-                const { created, name, duration,  creator } = data.quizDetails;
+                const { created, name, duration,  creator, noOfQuestions } = data.quizDetails;
                 this.setState({
                     loading : false,
-                    quiz : {created, name, duration},
+                    quiz : {created, name, duration, noOfQuestions},
                     quizCreator : creator
                 })
                 this.min = duration.min;
@@ -47,7 +48,7 @@ class QuizPage extends Component {
     fetchQuestions = e => {
         e.preventDefault()
         this.setState({loading : true})
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/take`)
+        fetch(`${API_BASE}/quiz/${this.state.quizId}/take`)
         .then(res => res.json())
         .then(data => {
             this.setState({
@@ -76,7 +77,7 @@ class QuizPage extends Component {
         await this.saveAndNext();
         this.setState({disableButton : true, submitted : true, loading : true});
         let answers = this.state.answers;
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/submit/${this.state.quizId}`, {
+        fetch(`${API_BASE}/submit/${this.state.quizId}`, {
             method : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -143,29 +144,38 @@ class QuizPage extends Component {
     render(){
         if(this.state.quiz) {
             const {user, result} = this.state;
-            const {name, duration, created} = this.state.quiz;
+            const {name, duration, created, noOfQuestions} = this.state.quiz;
             const { name : creatorName } = this.state.quizCreator;
             if (!this.state.starting && !this.state.result) {
                 return (
                     <>
-                        <img src={logo} alt="Quizza logo" className='logo-page'/>
-                        <div style={{padding : '10px', display : 'flex', flexDirection : 'column', justifyContent: 'center', alignItems : 'center', height : '50vh', textAlign : 'center'}}>
-                            <div>
-                                <h1>{name}</h1>
-                                <p>Created by {creatorName} on {new Date(created).toDateString()} </p>
-                                <h2>Time Allowed : {`${duration.min} min ${duration.sec.padStart(2, 0)} sec`}</h2>
+                        <div style={{minHeight : 'calc(100vh - 60px)'}}>
+                            <img src={logo} alt="Quizza logo" className='logo-page'/>
+                            <div style={{padding : '10px', display : 'flex', flexDirection : 'column', justifyContent: 'center', alignItems : 'center', height : '50vh', textAlign : 'center'}}>
                                 <div>
-                                    <button className='btn-take' onClick = {this.displayModal}>TAKE QUIZ</button>
+                                    <h1>{name}</h1>
+                                    <p>Created by {creatorName} on {new Date(created).toDateString()} </p>
+                                    <h3>No of questions : {noOfQuestions}</h3>
+                                    <h2>Time Allowed : {`${duration.min} min ${duration.sec.padStart(2, 0)} sec`}</h2>
+                                    <div>
+                                        <button className='btn-take' onClick = {this.displayModal}>TAKE QUIZ</button>
+                                    </div>
+                                </div>  
+                                <div ref = {elem => this.popup = elem} className="popup">
+                                    <button onClick={this.closeModal} className='btn-close-popup'>X</button>
+                                    <form onSubmit= {this.fetchQuestions}>
+                                        <input required ref={elem => this.user = elem} minLength="3" type="text" placeholder="Enter Name"/>
+                                        <button type="submit" >START</button>
+                                    </form>
                                 </div>
-                            </div>  
-                            <div ref = {elem => this.popup = elem} className="popup">
-                                <button onClick={this.closeModal} className='btn-close-popup'>X</button>
-                                <form onSubmit= {this.fetchQuestions}>
-                                    <input required ref={elem => this.user = elem} minLength="3" type="text" placeholder="Enter Name"/>
-                                    <button type="submit" >START</button>
-                                </form>
+                                {this.state.loading && <div className="loading"></div>}
                             </div>
-                            {this.state.loading && <div className="loading"></div>}
+                        </div>
+                        <div className='textCenter underline bold'>
+                            <Link to='/createquiz' target='_blank'>Create your own quiz</Link>
+                        </div>
+                        <div className='textCenter'>
+                            <em>Quizza was created by <a style={{color:'brown'}} href='https://twitter.com/olamideaboyeji' target='_blank' rel="noopener noreferrer">Olamide Aboyeji</a></em>
                         </div>
                     </>
                 );
@@ -177,7 +187,7 @@ class QuizPage extends Component {
                         <Timer timeOver = {this.submitAnswers} min = {this.min} sec = {this.sec} submitted={this.state.submitted}/>
                         <div style={{display : 'flex', flexWrap : 'wrap', margin : 'auto', justifyContent : 'center'}}>
                             {Array.from({length : this.state.questions.length}, (item, i) => {
-                                return <button title={`Question ${i + 1}`} onClick = {() => this.handleQuestionChange(i+1)} key ={i} style={{margin : '10px', backgroundColor : this.state.answers[i] ? 'green' : 'red', color : 'white', width : '30px', height : '30px'}}>{i + 1}</button>
+                                return <button title={`Question ${i + 1}`} onClick = {() => this.handleQuestionChange(i+1)} key ={i} style={{margin : '10px', backgroundColor : this.state.answers[i] ? 'green' : 'red', color : 'white', width : '30px', height : '30px', border : this.state.currrentQuestion === i + 1 ? '3px solid rgba(35, 173, 255, 1)' : ''}}>{i + 1}</button>
                             })}
                         </div>
                         <div className="activeQuestion bold">Question {this.state.currrentQuestion} of {this.state.questions.length}</div>
@@ -216,22 +226,30 @@ class QuizPage extends Component {
             }
             if(this.state.result) {
                 return (
-                    <div>
-                        <img src={logo} alt="Quizza logo" className='logo-page'/>
-                        <div className='result-container'>
-                            <div className='result-img'>
+                    <>
+                        <div style={{minHeight : 'calc(100vh - 60px)'}}>
+                            <img src={logo} alt="Quizza logo" className='logo-page'/>
+                            <div className='result-container'>
+                                <div className='result-img'>
 
-                            </div>
-                            <div style={{textAlign : 'center'}}>
-                                <p className='result-name'>Hey, <span className='bold' style={{color: 'sienna'}}>{user}</span></p>
-                                <p className='result-percent-intro'>Your score for '<span className='bold'>{name}</span>' is </p>
-                                <p className='result-percent'>{result.percent.toFixed(1).split('.')[1] === '0' ? result.percent : result.percent.toFixed(1)}%</p>
-                                <p className='result-score-intro'>Correct Answers / Total Questions</p>
-                                <p className='result-score bold'>{result.score} / {result.max}</p>
-                                <p>See where you rank on the <Link to={`${this.state.quizId}/leaderboard`} target='_blank'>Quiz Leaderboard</Link></p>
+                                </div>
+                                <div style={{textAlign : 'center'}}>
+                                    <p className='result-name'>Hey, <span className='bold' style={{color: 'sienna'}}>{user}</span></p>
+                                    <p className='result-percent-intro'>Your score for '<span className='bold'>{name}</span>' is </p>
+                                    <p className='result-percent'>{result.percent.toFixed(1).split('.')[1] === '0' ? result.percent : result.percent.toFixed(1)}%</p>
+                                    <p className='result-score-intro'>Correct Answers / Total Questions</p>
+                                    <p className='result-score bold'>{result.score} / {result.max}</p>
+                                    <p>See where you rank on the <Link to={`${this.state.quizId}/leaderboard`} target='_blank'>Quiz Leaderboard</Link></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                            <div className='textCenter underline bold'>
+                            <Link to='/createquiz' target='_blank'>Create your own quiz</Link>
+                        </div>
+                        <div className='textCenter'>
+                            <em>Quizza was created by <a style={{color:'brown'}} href='https://twitter.com/olamideaboyeji' target='_blank' rel="noopener noreferrer">Olamide Aboyeji</a></em>
+                        </div>
+                    </>
                 )
             }
         }
