@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Timer from '../components/Timer';
 import logo from '../images/quizza.png';
 import API_BASE from '../apiBase.js';
+import { addQuestionToTaken, quizTaken } from '../auth';
 
 class QuizPage extends Component {
     constructor({match}){
@@ -21,21 +22,23 @@ class QuizPage extends Component {
             submitted : false,
             disableButton :  false,
             loading : true, 
-            quizNotFound : false
+            quizNotFound : false,
+            quizTaken : false
         }
     }
    
     componentDidMount() {
+        if(quizTaken(this.state.quizId)) this.setState({quizTaken : true});
         fetch(`${API_BASE}/quiz/${this.state.quizId}`)
         .then(res => res.json())
         .then(data => {
             if(data.error) {
                 this.setState({quizNotFound : true, loading : false})
             } else {
-                const { created, name, duration,  creator, noOfQuestions } = data.quizDetails;
+                const { created, name, duration,  creator, noOfQuestions, privateBoard } = data.quizDetails;
                 this.setState({
                     loading : false,
-                    quiz : {created, name, duration, noOfQuestions},
+                    quiz : {created, name, duration, noOfQuestions, privateBoard},
                     quizCreator : creator
                 })
                 this.min = duration.min;
@@ -87,6 +90,7 @@ class QuizPage extends Component {
         })
         .then(res => res.json())
         .then(data => {
+                addQuestionToTaken(this.state.quizId);
                 this.setState({
                     starting : false,
                     loading : false,
@@ -143,8 +147,8 @@ class QuizPage extends Component {
     }
     render(){
         if(this.state.quiz) {
-            const {user, result} = this.state;
-            const {name, duration, created, noOfQuestions} = this.state.quiz;
+            const {user, result, quizTaken} = this.state;
+            const {name, duration, created, noOfQuestions, privateBoard} = this.state.quiz;
             const { name : creatorName } = this.state.quizCreator;
             if (!this.state.starting && !this.state.result) {
                 return (
@@ -158,7 +162,7 @@ class QuizPage extends Component {
                                     <h3>No of questions : {noOfQuestions}</h3>
                                     <h2>Time Allowed : {`${duration.min} min ${duration.sec.padStart(2, 0)} sec`}</h2>
                                     <div>
-                                        <button className='btn-take' onClick = {this.displayModal}>TAKE QUIZ</button>
+                                        {quizTaken ? <button style={{cursor : 'not-allowed'}}className='btn-take' disabled>QUIZ TAKEN ALREADY</button> : <button className='btn-take' onClick = {this.displayModal}>TAKE QUIZ</button>}
                                     </div>
                                 </div>  
                                 <div ref = {elem => this.popup = elem} className="popup">
@@ -239,7 +243,7 @@ class QuizPage extends Component {
                                     <p className='result-percent'>{result.percent.toFixed(1).split('.')[1] === '0' ? result.percent : result.percent.toFixed(1)}%</p>
                                     <p className='result-score-intro'>Correct Answers / Total Questions</p>
                                     <p className='result-score bold'>{result.score} / {result.max}</p>
-                                    <p>See where you rank on the <Link to={`${this.state.quizId}/leaderboard`} target='_blank'>Quiz Leaderboard</Link></p>
+                                    {!privateBoard && <p>See where you rank on the <Link to={`${this.state.quizId}/leaderboard`} target='_blank'>Quiz Leaderboard</Link></p>}
                                 </div>
                             </div>
                         </div>
