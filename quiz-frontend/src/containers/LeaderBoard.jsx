@@ -79,7 +79,7 @@ class LeaderBoard extends React.Component {
                     <Link to='/createquiz' target='_blank'>Create your own quiz</Link>
                 </div>
                 <div className='textCenter'>
-                    <em>Quizza was created by <a style={{color:'brown'}} href='https://twitter.com/olamideaboyeji' target='_blank' rel="noopener noreferrer">Olamide Aboyeji</a></em>
+                    <em>Quizza was developed by <a style={{color:'brown'}} href='https://twitter.com/olamideaboyeji' target='_blank' rel="noopener noreferrer">Olamide Aboyeji</a></em>
                 </div>
             </>
         )

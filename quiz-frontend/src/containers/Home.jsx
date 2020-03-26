@@ -18,7 +18,7 @@ function Home() {
             </Link>
           </div>
         </div>
-          <p className={styles.creator}>Created by <a href="https://twitter.com/olamideaboyeji" target="_blank" rel="noopener noreferrer">Olamide Aboyeji </a> | {new Date().getFullYear()}</p>
+          <p className={styles.creator}>Developed by <a href="https://twitter.com/olamideaboyeji" target="_blank" rel="noopener noreferrer">Olamide Aboyeji </a> | {new Date().getFullYear()}</p>
       </div>
     </div>
   );
