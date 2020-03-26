@@ -52,11 +52,13 @@ const quizControllers = {
     getSingleQuizIntro(req, res) {
         Quiz.findOne({id : req.params.quizId})
         .populate('creator', '_id name email')
-        .select('name created creator duration expires')
-        .exec((err, quizDetails) => {
-            if (err || !quizDetails) return res.status(404).json({
+        .exec((err, quiz) => {
+            if (err || !quiz) return res.status(404).json({
                 error : 'Quiz not found'
             })
+            const {name, creator, created, duration, expires, questions} = quiz;
+            const noOfQuestions = questions.length; 
+            let quizDetails = { name, created, creator, duration, expires, noOfQuestions};
             return res.json({quizDetails});
         });
     },
