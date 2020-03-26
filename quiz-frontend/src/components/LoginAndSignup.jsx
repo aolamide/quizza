@@ -1,6 +1,7 @@
 import React from 'react';
 import {authenticate} from '../auth';
 import { Redirect } from 'react-router-dom';
+import API_BASE from '../apiBase.js';
 
 class LoginAndSignup extends React.Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class LoginAndSignup extends React.Component {
     }
 
     register = () => {
-        fetch('https://lalaquiz.herokuapp.com/api/v1/register', {
+        fetch(`${API_BASE}/register`, {
             method : 'POST',
             headers : {
                 Accept : 'application/json',
@@ -49,7 +50,7 @@ class LoginAndSignup extends React.Component {
     }
 
     login = () => {
-        fetch('https://lalaquiz.herokuapp.com/api/v1/login', {
+        fetch(`${API_BASE}/login`, {
             method : 'POST',
             headers : {
                 Accept : 'application/json',
@@ -73,7 +74,7 @@ class LoginAndSignup extends React.Component {
     requestPasswordReset = (e) => {
         e.preventDefault();
         this.setState({loading : true, resetError : '', resetMessage :''});
-        fetch('https://lalaquiz.herokuapp.com/api/v1/forgotPassword', {
+        fetch(`${API_BASE}/forgotPassword`, {
             method : 'POST',
             headers : {
                 Accept : 'application/json',

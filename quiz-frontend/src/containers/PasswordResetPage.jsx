@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import API_BASE from '../apiBase.js';
 
 class PasswordResetPage extends Component {
     state = {
@@ -16,7 +17,7 @@ class PasswordResetPage extends Component {
         else {
             this.setState({loading : true})
             const token = this.props.match.params.token;
-            fetch(`https://lalaquiz.herokuapp.com/api/v1/updatePassword?token=${token}`, {
+            fetch(`${API_BASE}/updatePassword?token=${token}`, {
                 method : 'PUT',
                 headers : {
                     Accept : 'application/json',
@@ -40,7 +41,7 @@ class PasswordResetPage extends Component {
     }
     componentDidMount() {
         const token = this.props.match.params.token;
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/reset?token=${token}`)
+        fetch(`${API_BASE}/reset?token=${token}`)
         .then(res => res.json())
         .then(data => {
             if(data.error) this.setState({error : data.error})

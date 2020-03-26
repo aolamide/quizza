@@ -1,0 +1,1 @@
+export default 'https://lalaquiz.herokuapp.com/api/v1';
