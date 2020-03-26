@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import API_BASE from '../apiBase.js';
+import {Link} from 'react-router-dom';
 
 class LeaderBoard extends React.Component {
     constructor({match}){
@@ -13,7 +15,7 @@ class LeaderBoard extends React.Component {
     }
    
     componentDidMount() {
-        fetch(`https://lalaquiz.herokuapp.com/api/v1/quiz/${this.state.quizId}/leaderboard`)
+        fetch(`${API_BASE}/quiz/${this.state.quizId}/leaderboard`)
         .then(res => res.json())
         .then(quiz => {
             if(!quiz.error) {
@@ -38,29 +40,37 @@ class LeaderBoard extends React.Component {
           const {takenBy, name, created} = this.state.quiz;
           const {name : creatorName} =   this.state.quizCreator;
           return (
-            <div style={{padding : '10px', marginTop : '50px', display:'flex', flexDirection:'column', alignItems : 'center'}}>
-                <h3>{name}</h3>
-                <h4>Created by {creatorName} on {new Date(created).toDateString()}</h4>
-                <table>
-                    <thead>
-                        <tr>
-                           <td>Name</td>
-                            <td>Score</td> 
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        takenBy
-                        .sort((a,b) => Number(b.score) - Number(a.score))
-                        .map(user => 
-                            (<tr key={user._id}>
-                                <td>{user.name}</td>
-                                <td>{user.score}</td>
-                            </tr>))
-                    }
-                    </tbody>
-                </table>
-            </div>
+            <>
+                <div style={{minHeight : 'calc(100vh - 105px)',padding : '10px', marginTop : '50px', display:'flex', flexDirection:'column', alignItems : 'center'}}>
+                    <h3>{name}</h3>
+                    <h4>Created by {creatorName} on {new Date(created).toDateString()}</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                            <td>Name</td>
+                                <td>Score</td> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            takenBy
+                            .sort((a,b) => Number(b.score) - Number(a.score))
+                            .map(user => 
+                                (<tr key={user._id}>
+                                    <td>{user.name}</td>
+                                    <td>{user.score}</td>
+                                </tr>))
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <div className='textCenter underline bold'>
+                    <Link to='/createquiz' target='_blank'>Create your own quiz</Link>
+                </div>
+                <div className='textCenter'>
+                    <em>Quizza was created by <a style={{color:'brown'}} href='https://twitter.com/olamideaboyeji' target='_blank' rel="noopener noreferrer">Olamide Aboyeji</a></em>
+                </div>
+            </>
         )
         }
         else if(this.state.noResult) return (

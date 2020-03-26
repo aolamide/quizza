@@ -34,7 +34,9 @@ thead {
 .textCenter {
   text-align: center;
 }
-
+.underline {
+  text-decoration: underline;
+}
 /* Absolute Center Spinner */
 .loading {
   position: fixed;
