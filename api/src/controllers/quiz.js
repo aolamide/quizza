@@ -15,7 +15,7 @@ const quizControllers = {
                 console.log(err);
                 return res.status(500).json({error :'Quiz not saved'});
             }
-            sendQuizMail(result.id, result.name, req.profile.email, req.profile.name);
+            sendQuizMail(result.id, result.name, req.profile.email, req.profile.name, result.questions, result.answers);
             return res.status(200).json({success : 'Quiz created successfully', quizId : result.id});
         });
     }, 
