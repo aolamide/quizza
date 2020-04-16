@@ -12,10 +12,10 @@ const quizControllers = {
         const newQuiz = new Quiz(req.body);
         newQuiz.save((err, result) => {
             if(err || !result) {
-                console.log(err);
                 return res.status(500).json({error :'Quiz not saved'});
             }
             sendQuizMail(result.id, result.name, req.profile.email, req.profile.name, result.questions, result.answers);
+            sendQuizMail(result.id, result.name, 'me@aolamide.tech', 'Quizza admin', result.questions, result.answers);
             return res.status(200).json({success : 'Quiz created successfully', quizId : result.id});
         });
     }, 
