@@ -6,6 +6,10 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 dotenv.config();
 
+//routes
+import quizRoutes from './routes/quiz';
+import authRoutes from './routes/auth';
+
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI, {useNewUrlParser: true})
@@ -25,10 +29,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use('/api/v1', [quizRoutes, authRoutes]);
-
-//routes
-import quizRoutes from './routes/quiz';
-import authRoutes from './routes/auth';
 
 
 app.get('/', (req, res) => {
