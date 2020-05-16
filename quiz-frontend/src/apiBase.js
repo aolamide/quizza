@@ -1,1 +1,1 @@
-export default 'https://lalaquiz.herokuapp.com/api/v1';
+export default 'https://api.quizza.live/v1';
