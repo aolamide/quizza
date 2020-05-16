@@ -2,6 +2,7 @@ import React from 'react';
 import API_BASE from '../apiBase.js';
 import {Link} from 'react-router-dom';
 import { isAuthenticated } from '../auth';
+import { Helmet } from 'react-helmet';
 
 class LeaderBoard extends React.Component {
     constructor({match}){
@@ -36,7 +37,6 @@ class LeaderBoard extends React.Component {
                     quiz : {name, takenBy, created},
                     quizCreator : creator
                 })
-                document.title = `${name} Leaderboard | Quizza`;
             }
             else {
                 this.setState({loading : false, noResult : true, error : quiz.error})
@@ -52,13 +52,17 @@ class LeaderBoard extends React.Component {
           const {name : creatorName} =   this.state.quizCreator;
           return (
             <>
+                <Helmet>
+                    <title>{name}'s Leaderboard | Quizza</title>
+                    <meta name="description" content={`Leaderboard for Quizza quiz ${name}. Quizza is a platform that allows you create fun quizzes and share with friends to take.`} />
+                </Helmet>
                 <div style={{minHeight : 'calc(100vh - 105px)',padding : '10px', marginTop : '50px', display:'flex', flexDirection:'column', alignItems : 'center'}}>
                     <h3>{name}</h3>
                     <h4>Created by {creatorName} on {new Date(created).toDateString()}</h4>
                     <table>
                         <thead>
                             <tr>
-                            <td>Name</td>
+                                <td>Name</td>
                                 <td>Score</td> 
                             </tr>
                         </thead>

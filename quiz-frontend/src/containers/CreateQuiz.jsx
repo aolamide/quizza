@@ -5,6 +5,7 @@ import { isAuthenticated } from '../auth';
 import logo from '../images/quizza.png';
 import {Link} from 'react-router-dom';
 import API_BASE from '../apiBase.js';
+import { Helmet } from 'react-helmet';
 
 
 class CreateQuiz extends Component {
@@ -174,6 +175,9 @@ class CreateQuiz extends Component {
         if(this.state.status === 'fillingDetails') {
             return (
                 <>
+                    <Helmet>
+                        <title>Create Quiz on Quizza</title>
+                    </Helmet>
                     <img style={{marginTop : '90px'}} src={logo} alt="Quizza logo" className='logo-page'/>
                     <div className={styles.details}>
                         <form onSubmit={this.saveDetails} className={styles.quizForm}>

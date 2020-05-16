@@ -4,13 +4,14 @@ import Timer from '../components/Timer';
 import logo from '../images/quizza.png';
 import API_BASE from '../apiBase.js';
 import { addQuestionToTaken, quizTaken } from '../auth';
+import { Helmet } from 'react-helmet';
 
 class QuizPage extends Component {
     constructor({match}){
         super()
         this.state = {
             quizId : match.params.quizId,
-            quiz : null,
+            quiz : {},
             quizCreator : null,
             starting : false,
             user : '',
@@ -33,7 +34,8 @@ class QuizPage extends Component {
         .then(res => res.json())
         .then(data => {
             if(data.error) {
-                this.setState({quizNotFound : true, loading : false})
+                this.setState({quizNotFound : true, loading : false});
+                document.title = 'Quiz Not Found | Quizza';
             } else {
                 const { created, name, duration,  creator, noOfQuestions, privateBoard } = data.quizDetails;
                 this.setState({
@@ -146,13 +148,17 @@ class QuizPage extends Component {
         this.popup.style.display = 'none';
     }
     render(){
-        if(this.state.quiz) {
+        if(this.state.quiz.name) {
             const {user, result, quizTaken} = this.state;
             const {name, duration, created, noOfQuestions, privateBoard} = this.state.quiz;
             const { name : creatorName } = this.state.quizCreator;
             if (!this.state.starting && !this.state.result) {
                 return (
                     <>
+                        <Helmet>
+                            <title>{name} | Quizza</title>
+                            <meta name="description" content={`Quizza quiz page for ${name} quiz. Quizza lets you create multiple-choice question quizzes and share link with friends and family to take + live leaderboard.`}/>
+                        </Helmet>
                         <div style={{minHeight : 'calc(100vh - 60px)'}}>
                             <img src={logo} alt="Quizza logo" className='logo-page'/>
                             <div style={{padding : '10px', display : 'flex', flexDirection : 'column', justifyContent: 'center', alignItems : 'center', height : '50vh', textAlign : 'center'}}>
@@ -231,6 +237,10 @@ class QuizPage extends Component {
             if(this.state.result) {
                 return (
                     <>
+                        <Helmet>
+                            <title>{name}'s Result | Quizza</title>
+                            <meta name="description" content={`Quizza quiz page for ${name} quiz. Quizza lets you create multiple-choice question quizzes and share link with friends and family to take + live leaderboard.`}/>
+                        </Helmet>
                         <div style={{minHeight : 'calc(100vh - 60px)'}}>
                             <img src={logo} alt="Quizza logo" className='logo-page'/>
                             <div className='result-container'>
