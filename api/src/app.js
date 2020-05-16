@@ -35,6 +35,11 @@ app.get('/', (req, res) => {
     res.json('Welcome to Quizza API');
 });
 
+app.get('/v1', (req, res) => {
+    res.json('Welcome to Quizza API v1');
+});
+
+
 app.use((req, res, next) => {
     return res.status(404).json({
         error : 'Not Found'
