@@ -28,12 +28,18 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use('/api/v1', [quizRoutes, authRoutes]);
+app.use('/v1', [quizRoutes, authRoutes]);
 
 
 app.get('/', (req, res) => {
     res.json('Welcome to Quizza API');
-}) 
+});
+
+app.use((req, res, next) => {
+    return res.status(404).json({
+        error : 'Not Found'
+    })
+})
 
 
 //listen to app
