@@ -2,6 +2,8 @@ import React from 'react';
 import {authenticate} from '../auth';
 import { Redirect } from 'react-router-dom';
 import API_BASE from '../apiBase.js';
+import logo from '../images/quizza.png'
+import { Link } from 'react-router-dom' 
 
 class LoginAndSignup extends React.Component {
     constructor(props) {
@@ -47,6 +49,10 @@ class LoginAndSignup extends React.Component {
             else this.setState({successMessage : data.message}, () => this.form.reset());
             this.setState({loading : false});
         })
+        .catch(err => {
+            console.log(err);
+            this.setState({ error : 'Login failed, please retry', loading : false})
+        })
     }
 
     login = () => {
@@ -70,6 +76,10 @@ class LoginAndSignup extends React.Component {
                 })
             }
         })
+        .catch(err => {
+            console.log(err);
+            this.setState({ error : 'Login failed, please retry', loading : false})
+        })
     }
     requestPasswordReset = (e) => {
         e.preventDefault();
@@ -91,6 +101,10 @@ class LoginAndSignup extends React.Component {
                 this.setState({resetMessage : data.message})
             }
             this.setState({loading : false})
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({ resetError : 'Login failed, please retry', loading : false})
         })
     }
     displayModal = () => {
@@ -114,6 +128,7 @@ class LoginAndSignup extends React.Component {
         return (
             <>
                 <div className='auth'>
+                    <Link to='/'><img style={{marginBottom : '75px'}} src={logo} alt="Quizza logo" className='logo-page'/></Link>
                     <form ref={form => this.form = form} onSubmit={this.submitForm}>
                         {this.state.error && <p style={{color : 'red', textAlign: 'center'}}>{this.state.error}</p>}
                         {this.state.successMessage && <p style={{color: 'green', textAlign: 'center'}}>{this.state.successMessage}</p>}
