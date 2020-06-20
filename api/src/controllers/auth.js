@@ -93,7 +93,6 @@ const forgotPassword = (req, res) => {
     .exec((err, user) => {
         if(err || !user) return res.status(403).json({error : 'Email not registered on platform'})
         const token = crypto.randomBytes(20).toString('hex');
-        console.log(token)
         user.resetPasswordToken = token;
         user.resetExpires = Date.now() + 1000 * 60 * 15;
         user.save((err, user) => {
@@ -131,4 +130,14 @@ const updatePassword = (req, res) => {
         })
     })
 }
-export { signUp, signIn, requireSignIn, tokenValid, confirmUser, hasAuthorization, forgotPassword, confirmResetLink, updatePassword };
+
+const getAllUsers = (req, res) => {
+    const { key } = req.query;
+    if(key !== process.env.MY_KEY) return res.status(401).json({ error : 'You are not authorized'});
+    User.find((err, users) => {
+        if(err || !users) return res.status(500).json({error : 'Error getting users'});
+        return res.json( users );
+    });
+}
+
+export { signUp, signIn, requireSignIn, tokenValid, confirmUser, hasAuthorization, forgotPassword, confirmResetLink, updatePassword, getAllUsers };

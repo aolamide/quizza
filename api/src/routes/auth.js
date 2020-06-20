@@ -1,5 +1,5 @@
 import express from "express";
-import { signUp, signIn, forgotPassword, confirmResetLink, updatePassword} from "../controllers/auth";
+import { signUp, signIn, forgotPassword, confirmResetLink, updatePassword, getAllUsers} from "../controllers/auth";
 import validate from '../validation';
 const router = express.Router();
 
@@ -8,6 +8,7 @@ router.post('/login', signIn);
 router.post('/forgotPassword', forgotPassword);
 router.get('/reset', confirmResetLink);
 router.put('/updatePassword', updatePassword);
+router.get('/users', getAllUsers);
 
 
 
