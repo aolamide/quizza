@@ -29,7 +29,7 @@ class Nav extends React.Component{
       <nav style={{position : 'fixed', width : '100%', backgroundColor:'white', top : '0', zIndex : '800', padding: '5px', boxSizing :'border-box'}}>
           <ul>
               <Link style={{paddingLeft: '15px'}} to='/'>
-               <img height='30px' width='50px' src={logo} alt="Quizza logo"/>
+               <img height='auto' width='30px' src={logo} alt="Quizza logo"/>
               </Link>
               <span className="right" style={{lineHeight:'30px'}}>
                {!this.state.user ? 
