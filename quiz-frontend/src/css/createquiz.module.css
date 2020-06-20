@@ -21,7 +21,7 @@
     color: white;
     padding: 7px;
     margin-left: 10px;
-    width: 150px
+    width: 200px
 }
 .quizForm input[type=number] {
     width: 50px;
@@ -48,7 +48,7 @@
 }
 
 .quiz {
-    padding-top: 60px;
+    padding-top: 95px;
 }
 
 .complete { 
