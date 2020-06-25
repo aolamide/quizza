@@ -8,7 +8,8 @@ dotenv.config();
 
 //routes
 import quizRoutes from './routes/quiz';
-import authRoutes from './routes/auth';
+import authRoutes from './routes/auth'; 
+import adminRoutes from './routes/admin'; 
 
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -29,6 +30,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use('/v1', [quizRoutes, authRoutes]);
+app.use('/v1/admin', adminRoutes );
 
 
 app.get('/', (req, res) => {
