@@ -15,10 +15,8 @@ const AdminLogin = () => {
   let [loading, setLoading] = useState(false);
   let [redirect, setRedirect] = useState(false);
   let handleChange = e => {
-    console.log(e.target.name, e.target.value);
     credentials[e.target.name] = e.target.value;
     setCredentials(credentials);
-    console.log(credentials[e.target.name])
   }
   let submitForm = e => {
     e.preventDefault();
@@ -64,7 +62,6 @@ const AdminLogin = () => {
                   <label htmlFor="password">Password</label>
                   <input name="password" required id="password" onChange={handleChange} type="password" placeholder="password"/>
               </div>
-              <button type='button' onClick={() => setError(!error)}>gggf</button>
               <div>{
                   loading ? 
                   <div className="loader"></div> 
