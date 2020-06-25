@@ -1,5 +1,5 @@
 import Quiz from '../models/quiz';
-import User from '../models/quiz';
+import User from '../models/user';
 
 const getStats = async (req, res) => {
   try {
