@@ -7,6 +7,8 @@ import QuizPage from './containers/QuizPage';
 import CreateQuiz from './containers/CreateQuiz';
 import LeaderBoard from './containers/LeaderBoard';
 import LoginAndSignup from './components/LoginAndSignup';
+import AdminLogin from './admin/Login';
+import AdminDashboard from './admin/Dashboard';
 import { isAuthenticated } from './auth';
 import './css/App.css';
 import PasswordResetPage from './containers/PasswordResetPage';
@@ -35,6 +37,20 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 )
 
+const AdminRoute = ({ component: Component, ...rest }) => (  
+<Route {...rest} render={props => (
+    isAuthenticated() && isAuthenticated().user.isAdmin ? 
+    ( <div>
+        <Nav />
+        <Component {...props}/>
+      </div> 
+    ) 
+    : 
+    (<Redirect to={{pathname: '/admin', state: { from: props.location }}}/> )  
+    )}
+  />
+)
+
 function App() {
   return (
       <Router>
@@ -43,6 +59,8 @@ function App() {
             <NavRoute path='/howitworks' component={HowItWorks} />
             <PrivateRoute path='/createquiz' component={CreateQuiz} />
             <Route exact path='/login' component={LoginAndSignup} />
+            <Route exact path='/admin' component={AdminLogin} />
+            <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
             <Route exact path='/:quizId' component={QuizPage} />
             <NavRoute path='/:quizId/leaderboard' component={LeaderBoard} />
             <Route path='/reset/:token' component={PasswordResetPage} />
