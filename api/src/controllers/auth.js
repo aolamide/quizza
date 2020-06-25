@@ -10,6 +10,7 @@ dotenv.config();
 const signUp = (req, res) => {
     User.findOne({email : req.body.email}, (err, user)=> {
         if(err || !user){
+            delete req.body.isAdmin;
             const newUser = new User(req.body);
             newUser.save((error, saved) => {
                 if(error) return res.status(403).json({error})
@@ -53,6 +54,39 @@ const signIn = (req, res) => {
     })
     
 }
+const adminSignIn = (req, res) => {
+    //find the user based on email
+    const { email, password } = req.body;
+    User.findOne({email}, (err, user) => {
+        //if err or no user
+        if(err || !user) {
+            return res.status(401).json({
+                error : "User with that email does not exist. Please sign up"
+            })
+        }
+        //if user is found, make sure the email and password match
+        if(!user.isAdmin) {
+            return res.status(401).json({
+                error : "Invalid credentials"
+            })
+        }
+        if(!user.authenticate(password)) {
+            return res.status(401).json({
+                error : "Email and password do not match"
+            }) 
+        }
+
+        //if user is found, authenticate
+        //generate a token with user id and secret
+        const token = jwt.sign({_id: user._id, isAdmin : user.isAdmin}, process.env.JWT_SECRET);
+    
+        //return response with user and token to frontend client
+        const { _id, name, email, isAdmin } = user;
+        return res.json({token, user : {_id, email, name, isAdmin}});
+    })
+    
+}
+
 const tokenValid = (err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
       res.status(401).json({error :'Session expired, please relogin'});
@@ -65,12 +99,16 @@ const requireSignIn = expressJwt({
     userProperty : "auth"
 });
 
+const isAdmin = (req, res, next) => {
+    if(!req.auth.isAdmin) return res.json({"error" : 'Back off, admin route'});
+    return next()
+}
 const confirmUser = (req, res, next) => {
     User.findById(req.body.creator)
     .exec((err, user) => {
         if(err || !user){
             return res.status(400).json({
-                error: "There was an error creating quiz, please relogin and create again"
+                error: "Error occured, please relogin and create again"
             })
         }
         req.profile = user; // adds profile object in req with user info
@@ -140,4 +178,4 @@ const getAllUsers = (req, res) => {
     });
 }
 
-export { signUp, signIn, requireSignIn, tokenValid, confirmUser, hasAuthorization, forgotPassword, confirmResetLink, updatePassword, getAllUsers };
+export { signUp, signIn, adminSignIn, requireSignIn, isAdmin, tokenValid, confirmUser, hasAuthorization, forgotPassword, confirmResetLink, updatePassword, getAllUsers };
