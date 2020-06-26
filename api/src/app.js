@@ -13,7 +13,7 @@ import adminRoutes from './routes/admin';
 
 const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect(MONGO_URI, {useNewUrlParser: true})
+mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology : true})
 .then(() => console.log('DB connected'))
 .catch(err => console.log(err));
 
