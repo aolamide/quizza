@@ -5,7 +5,7 @@
   flex-wrap: wrap;
 }
 .statBox {
-  width: 250px;
+  width: 250px !important;
   height: 120px;
   box-shadow: 2px 2px 2px #eee;
   margin: 10px;
@@ -16,6 +16,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+  box-shadow: 8px 8px 8px #f2f2f2, -8px -8px 8px #f2f2f2;
+}
+.statBox:hover {
+  cursor: pointer;
+  opacity: 0.5;
 }
 .statBox:nth-child(2) {
   background: linear-gradient(to right, #59cf5d 80%, #59d05c 20%);
@@ -39,4 +44,71 @@
 .statFigure {
   font-size: 25px;
   margin-top: 4px;
+}
+
+.table {
+  border-collapse: collapse;
+  width: auto;
+  min-width: 800px;
+  margin: auto; 
+  border-radius: 8px;
+  margin-top: 50px;
+  box-shadow: 15px 15px 15px #f2f2f2, -15px -15px 15px #f2f2f2;
+}
+.table caption {
+  font-weight: bold;
+  color: #fbad4b;
+  font-size: 24px;
+  text-align: left;
+  margin: 10px;
+}
+.table button {
+  background: none;
+}
+.table thead {
+  background-color: #6c7ae0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  color: white;
+  font-weight: bold;
+}
+.table tbody {
+  color: #9899b1;
+}
+.table td {
+  padding: 10px;
+}
+.table thead td:last-child {
+  border-radius: 0 10px 0 0;
+}
+.table thead td:first-child {
+  border-radius: 10px 0 0 0;
+}
+.table tbody tr:last-child td:last-child {
+  border-radius: 0 0 10px 0;;
+}
+.table tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 10px;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f8f6ff;
+} 
+
+.quizModal {
+  position: relative;
+  box-shadow: 15px 15px 15px #f2f2f2, -15px -15px 15px #f2f2f2;
+  width: 80vw;
+  max-width: 600px;
+  height: 80vh;
+  padding: 20px;
+  overflow : auto;
+  margin: auto;
+  background-color: white;
+}
+.questions div {
+  padding: 8px;
+}
+.questions div:nth-child(even) {
+  background-color: #f8f6ff;;
 }
