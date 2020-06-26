@@ -7,21 +7,21 @@ textarea, input, button {
   font-family: inherit;
 }
 
-table {
+table.leaderboard {
   border-collapse: collapse;
   width: 300px
 }
 
-td, thead {
+table.leaderboard td, table.leaderboard thead {
   border: 1px solid #ddd;
   text-align: left;
   padding: 8px;
 }
-tr:nth-child(even){background-color: #f2f2f2}
+table.leaderboard tr:nth-child(even){background-color: #f2f2f2}
 
-tbody tr:hover {background-color: #ddd; cursor: pointer}
+table.leaderboard tbody tr:hover {background-color: #ddd; cursor: pointer}
 
-thead {
+table.leaderboard thead {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #4CAF50;
