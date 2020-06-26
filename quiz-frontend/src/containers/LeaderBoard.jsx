@@ -56,10 +56,10 @@ class LeaderBoard extends React.Component {
                     <title>{name}'s Leaderboard | Quizza</title>
                     <meta name="description" content={`Leaderboard for Quizza quiz ${name}. Quizza is a platform that allows you create fun quizzes and share with friends to take.`} />
                 </Helmet>
-                <div style={{minHeight : 'calc(100vh - 105px)',padding : '10px', marginTop : '50px', display:'flex', flexDirection:'column', alignItems : 'center'}}>
+                <div style={{minHeight : 'calc(100vh - 105px)',padding : '10px', marginTop : '70px', display:'flex', flexDirection:'column', alignItems : 'center'}}>
                     <h3>{name}</h3>
                     <h4>Created by {creatorName} on {new Date(created).toDateString()}</h4>
-                    <table>
+                    <table className='leaderboard'>
                         <thead>
                             <tr>
                                 <td>Name</td>

@@ -270,7 +270,7 @@ nav button {
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    top: 200%;
+    top: 100%;
     right: 0;
 }
 

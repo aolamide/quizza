@@ -46,11 +46,12 @@ const quizControllers = {
     getAllQuiz(req, res) {
         Quiz.find()
         .populate('creator', '_id name email')
-        .select('-answers -questions -id -takenBy')
         .then(quizzes => {
-            res.json({ quizzes });
+            return res.json(quizzes );
         })
-        .catch(err => console.log(err))
+        .catch(error => {
+            return res.json({ error })
+        })
     },
     getSingleQuizIntro(req, res) {
         Quiz.findOne({id : req.params.quizId})
@@ -97,12 +98,12 @@ const quizControllers = {
         .select('questions');
     },
     deleteQuiz(req, res) {
-        Quiz.findOneAndDelete({id : req.params.quizId}, (err, result) => {
+        Quiz.findOneAndDelete({_id : req.params.quiz}, (err, result) => {
             if (err || !result) return res.json({
-                msg : "Quiz can't be deleted"
+                error : "Error occured while deleting quiz"
             });
             return res.json({
-                msg : "Quiz deleted"
+                message : "Quiz deleted successfully"
             })
         });
     }

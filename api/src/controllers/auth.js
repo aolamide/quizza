@@ -89,7 +89,7 @@ const adminSignIn = (req, res) => {
 
 const tokenValid = (err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
-      res.status(401).json({error :'Session expired, please relogin'});
+      return res.status(401).json({error :'Authoriztion error occured, please relogin and retry'});
     }
     next();
 }
@@ -170,12 +170,18 @@ const updatePassword = (req, res) => {
 }
 
 const getAllUsers = (req, res) => {
-    const { key } = req.query;
-    if(key !== process.env.MY_KEY) return res.status(401).json({ error : 'You are not authorized'});
     User.find((err, users) => {
         if(err || !users) return res.status(500).json({error : 'Error getting users'});
         return res.json( users );
     });
 }
 
-export { signUp, signIn, adminSignIn, requireSignIn, isAdmin, tokenValid, confirmUser, hasAuthorization, forgotPassword, confirmResetLink, updatePassword, getAllUsers };
+const deleteUser = (req, res) => {
+    const { user } = req.params;
+    User.findByIdAndDelete(user, (err, result) => {
+        if(err || !result) return res.json({error : "Error deleting user"});
+        return res.json({ message : 'User deleted successfully'})
+    })
+}
+
+export { signUp, signIn, adminSignIn, requireSignIn, isAdmin, tokenValid, confirmUser, hasAuthorization, forgotPassword, confirmResetLink, updatePassword, getAllUsers, deleteUser };
