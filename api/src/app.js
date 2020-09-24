@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-import morgan from 'morgan';
+// import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cors from 'cors';
 dotenv.config();
@@ -28,7 +28,7 @@ const app = express();
 //middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use('/v1', [quizRoutes, authRoutes]);
 app.use('/v1/admin', adminRoutes );
 
