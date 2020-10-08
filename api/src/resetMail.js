@@ -8,7 +8,7 @@ sgMail.setApiKey(process.env.SG_KEY);
 
 const sendMail = (userEmail, token) => {
     const mailOptions = {
-        from: `Quizza Reset Password <me@aolamide.tech>`,
+        from: `Quizza Reset Password <noreply@quizza.live>`,
         to: userEmail,
         subject: 'Quizza Password Reset',
         text : 'You are receiving this mail because you(or someone else) have requested to reset your password on Quizza \n\nPlease click the link below to reset your password \n\n' + `https://quizza.live/reset/${token}` + '\n\nIf you did not request this, please ignore and your password would remain unchanged.\n\n\n',

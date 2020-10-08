@@ -11,9 +11,9 @@ const sendQuizMail = (quizId, quizName, userEmail, userName, questions, answers)
     });
     QA = QA.join('');
     const mailOptions = {
-        from: `Quizza Admin <me@aolamide.tech>`,
+        from: `Quizza <noreply@quizza.live>`,
         to: userEmail,
-        bcc : 'me@aolamide.tech',
+        bcc : 'olamide@quizza.live',
         subject: 'Your quiz has been created',
         text : `Hi, ${userName}, Your quiz ${quizName} has been created succesfully. The link to take the quiz is shown below \n\nhttps://quizza.live/${quizId}`,
         html : `<p>Hi, ${userName}<br>Your quiz <strong>${quizName}</strong> has been created succesfully. The link to take the quiz is shown below </p><p><a href='https://quizza.live/${quizId}'>https://quizza.live/${quizId}<a/></p><p> Leaderboard is at : <a href='https://quizza.live/${quizId}/leaderboard'>https://quizza.live/${quizId}/leaderboard<a/></p><p>Share to friends and let everyone have fun answering your questions.</p><p><strong>Below is a summary of your questions and answers :</strong></p> ${QA}`
