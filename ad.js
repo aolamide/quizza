@@ -1,1 +1,0 @@
-importScripts('https://stuiop.com/v1/sw-import.js?h=waWQiOjEwODA2MjksInNpZCI6MTA4OTY0Miwid2lkIjoxODMzMTEsInNyYyI6MiwicG0iOjB9eyJ&d=quizza.live');
