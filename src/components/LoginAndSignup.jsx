@@ -46,7 +46,11 @@ class LoginAndSignup extends React.Component {
         .then(res => res.json())
         .then(data => {
             if(data.error) this.setState({error : data.error})
-            else this.setState({successMessage : data.message}, () => this.form.reset());
+            else this.setState({successMessage : data.message}, () => {
+                delete data.message;
+                authenticate(data, () => this.setState({redirectToReferer : true}));
+                this.form.reset()
+            });
             this.setState({loading : false});
         })
         .catch(err => {

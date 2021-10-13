@@ -7,6 +7,21 @@ import {Link} from 'react-router-dom';
 import API_BASE from '../apiBase.js';
 import { Helmet } from 'react-helmet';
 
+const VerificationBar = ({message, resendVerify, loading}) => {
+    return (
+        <div className={styles.verifyBar}>
+            <div>
+                Please check your mailbox to verify your email address <strong>{isAuthenticated().user.email}</strong>. A verification link has been sent. 
+            </div>
+            <div>
+                <button disabled={loading} onClick={() => resendVerify()} className={styles.verifyButton}>{loading ? 'Sending...'  : 'Resend Verification'}</button>
+            </div>
+            <div>
+                {message}
+            </div>
+        </div>
+    )
+}
 
 class CreateQuiz extends Component {
     state = {
@@ -31,7 +46,11 @@ class CreateQuiz extends Component {
         error : '',
         loading : false,
         linkCopied : false,
-        privateBoard : false
+        privateBoard : false,
+        isVerified : isAuthenticated().user.isVerified || false,
+        checkingVerification : !isAuthenticated().user.isVerified,
+        verifyMessage : '',
+        sendingVerify : false
     }
     saveDetails = (e) => {
         e.preventDefault();
@@ -167,11 +186,44 @@ class CreateQuiz extends Component {
         } 
         return true;
     }
+    resendVerify = (first) => {
+        this.setState({ verifyMessage : '',sendingVerify : true });
+        const jwt = isAuthenticated();
+        fetch(`${API_BASE}/sendVerify`, {
+            method : 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                Authorization : `Bearer ${jwt.token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(!data.error && !first) {
+                this.setState({ verifyMessage : data.message });
+            }
+            else if(data.error === 'User already verified') {
+                const data = isAuthenticated();
+                data.user.isVerified = true;
+                localStorage.setItem('jwt', JSON.stringify(data));
+                this.setState({ isVerified : true })
+            } else if(!first){
+                this.setState({ verifyMessage : data.error })
+            }
+        })
+        .catch(() => this.setState({ verifyMessage : 'Network Error, retry.'}))
+        .finally(() => this.setState({ checkingVerification : false, sendingVerify : false }))
+    }
     componentDidMount() {
         document.title = `Create Quiz | Quizza`;
-    }
+        if(!this.state.isVerified) {
+           this.resendVerify('first');
+        }
+    };
 
     render() {
+        if(this.state.checkingVerification) return <div><img style={{marginTop : '90px'}} src={logo} alt="Quizza logo" className='logo-page'/></div>
+        if(!this.state.isVerified) return <VerificationBar message={this.state.verifyMessage} resendVerify={this.resendVerify} loading={this.state.sendingVerify} />
         if(this.state.status === 'fillingDetails') {
             return (
                 <>

@@ -12,6 +12,7 @@ import AdminDashboard from './admin/Dashboard';
 import { isAuthenticated } from './auth';
 import './css/App.css';
 import PasswordResetPage from './containers/PasswordResetPage';
+import EmailVerification from './containers/EmailVerification';
 
 
 const NavRoute = ({exact, path, component: Component}) => (
@@ -64,6 +65,7 @@ function App() {
             <Route exact path='/:quizId' component={QuizPage} />
             <NavRoute path='/:quizId/leaderboard' component={LeaderBoard} />
             <Route path='/reset/:token' component={PasswordResetPage} />
+            <NavRoute path='/verify/:token/:email' component={EmailVerification} />
         </Switch>
       </Router>
   );

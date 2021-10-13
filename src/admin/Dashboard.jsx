@@ -51,6 +51,7 @@ const Users = ({ users, deleteUser }) => {
         <tr>
           <td>Name</td>
           <td>Email</td>
+          <td>Verified</td>
           <td>Joined</td>
           <td></td>
         </tr>
@@ -60,6 +61,7 @@ const Users = ({ users, deleteUser }) => {
         <tr key={user._id}>
           <td>{user.name}</td>
           <td>{user.email}</td>
+          <td>{String(user.isVerified) || 'false'}</td>
           <td>{new Date(user.joined).toDateString()}</td>
           <td>
             <button onClick={() => deleteUser(user)}>

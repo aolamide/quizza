@@ -1,4 +1,13 @@
-
+.verifyBar {
+    margin-top : 90px;
+    text-align : center
+}
+.verifyButton {
+    color : white;
+    padding : 10px;
+    background-color:  #07323f;
+    margin : 12px 0;
+}
 .details {
     display: flex;
     justify-content: center;
