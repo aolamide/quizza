@@ -12,7 +12,7 @@ function Home() {
         <div className={styles.main}>
           <div className="center">
             <h1 style={{fontSize: '5rem', color : '#c9e4b5', marginBottom : '5px'}}> Quizza </h1>
-            <em>Create fun quizzes and share with friends</em>
+            <em style={{ color : 'white' }}>Create fun quizzes and share with friends</em>
             <Link to='/createquiz' >
               <button className={styles.btnCreate}>CREATE QUIZ</button>
             </Link>
