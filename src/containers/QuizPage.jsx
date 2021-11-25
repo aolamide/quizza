@@ -69,7 +69,7 @@ class QuizPage extends Component {
         this.setState({currrentQuestion : num, selectedAnswer : this.state.answers[num - 1]})
         document.querySelectorAll('.btn-answers').forEach(button => {
             if(button.name === this.state.answers[num - 1]) {
-                button.style.backgroundColor = 'green';
+                button.style.backgroundColor = '#52575e';
                 button.style.color = 'white';
             } else {
                 button.style.backgroundColor = '#ddd';
@@ -115,7 +115,7 @@ class QuizPage extends Component {
         let buttons = document.querySelectorAll('.btn-answers');
         buttons.forEach(button => {
             if(button.name === e.target.name){
-                button.style.backgroundColor = 'green';
+                button.style.backgroundColor = '#52575e';
                 button.style.color = 'white';
             } 
             else {
@@ -130,7 +130,7 @@ class QuizPage extends Component {
         await this.setState({currrentQuestion : this.state.currrentQuestion + 1, disableButton : false}, () => this.setState({selectedAnswer : this.state.answers[this.state.currrentQuestion - 1]}));
         document.querySelectorAll('.btn-answers').forEach(button => {
             if(button.name === this.state.answers[this.state.currrentQuestion - 1]){
-                button.style.backgroundColor = 'green';
+                button.style.backgroundColor = '#52575e';
                 button.style.color = 'white';
             } else {
                 button.style.backgroundColor = '#ddd';
@@ -197,7 +197,7 @@ class QuizPage extends Component {
                         <Timer timeOver = {this.submitAnswers} min = {this.min} sec = {this.sec} submitted={this.state.submitted}/>
                         <div style={{display : 'flex', flexWrap : 'wrap', margin : 'auto', justifyContent : 'center'}}>
                             {Array.from({length : this.state.questions.length}, (item, i) => {
-                                return <button title={`Question ${i + 1}`} onClick = {() => this.handleQuestionChange(i+1)} key ={i} style={{margin : '10px', backgroundColor : this.state.answers[i] ? 'green' : 'red', color : 'white', width : '30px', height : '30px', border : this.state.currrentQuestion === i + 1 ? '3px solid rgba(35, 173, 255, 1)' : ''}}>{i + 1}</button>
+                                return <button title={`Question ${i + 1}`} onClick = {() => this.handleQuestionChange(i+1)} key ={i} style={{margin : '10px', backgroundColor : this.state.answers[i] ? '#52575e' : 'red', color : 'white', width : '30px', height : '30px', border : this.state.currrentQuestion === i + 1 ? '3px solid rgba(35, 173, 255, 1)' : ''}}>{i + 1}</button>
                             })}
                         </div>
                         <div className="activeQuestion bold">Question {this.state.currrentQuestion} of {this.state.questions.length}</div>
@@ -253,7 +253,7 @@ class QuizPage extends Component {
                                     <p className='result-percent'>{result.percent.toFixed(1).split('.')[1] === '0' ? result.percent : result.percent.toFixed(1)}%</p>
                                     <p className='result-score-intro'>Correct Answers / Total Questions</p>
                                     <p className='result-score bold'>{result.score} / {result.max}</p>
-                                    {!privateBoard && <p>See where you rank on the <Link to={`${this.state.quizId}/leaderboard`} target='_blank'>Quiz Leaderboard</Link></p>}
+                                    {!privateBoard && <p>See where you rank on the <Link to={`/${this.state.quizId}/leaderboard`} target='_blank'>Quiz Leaderboard</Link></p>}
                                 </div>
                             </div>
                         </div>
