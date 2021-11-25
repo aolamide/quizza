@@ -136,7 +136,7 @@ ul {
   color: #07323f;
 }
 .questionDisplay div {
-  white-space: pre;
+  white-space: pre-wrap;
 }
 .logo-page {
   display: block;
