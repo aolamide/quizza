@@ -4,7 +4,7 @@ const Question = ({number, question, answer, inputChange}) => {
     let { title, options } = question;
     return(
         <div className="question">
-            <p>Question {number}</p>
+            <p className="questionNo">Question {number}</p>
             <textarea onInput={inputChange('title')} defaultValue={title} className="question-input" placeholder="Question"></textarea>
             <div className="option-row">
                 <div className="option">
@@ -23,7 +23,7 @@ const Question = ({number, question, answer, inputChange}) => {
                 </div>
             </div>
             <div>
-                <label htmlFor="answer">Choose correct answer</label>
+                <label htmlFor="answer">Choose correct answer :</label>
                 <select onInput={inputChange('answer')} style={{borderRadius : '6px', padding : '7px', marginLeft :'8px'}} id="answer" className='answers'>
                     <option value=''>Choose Answer</option>
                     <option value="A">Option A</option>
