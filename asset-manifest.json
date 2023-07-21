@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.1251488b.chunk.css",
-    "main.js": "/static/js/main.0ccdb72a.chunk.js",
-    "main.js.map": "/static/js/main.0ccdb72a.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.a73f6bde.js",
-    "runtime-main.js.map": "/static/js/runtime-main.a73f6bde.js.map",
-    "static/css/2.07cdd676.chunk.css": "/static/css/2.07cdd676.chunk.css",
-    "static/js/2.3feffebb.chunk.js": "/static/js/2.3feffebb.chunk.js",
-    "static/js/2.3feffebb.chunk.js.map": "/static/js/2.3feffebb.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.462447455ad4d9f83af9c7efad6de1e6.js": "/precache-manifest.462447455ad4d9f83af9c7efad6de1e6.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.07cdd676.chunk.css.map": "/static/css/2.07cdd676.chunk.css.map",
-    "static/css/main.1251488b.chunk.css.map": "/static/css/main.1251488b.chunk.css.map",
-    "static/js/2.3feffebb.chunk.js.LICENSE.txt": "/static/js/2.3feffebb.chunk.js.LICENSE.txt",
-    "static/media/App.css": "/static/media/score.f402a910.svg",
-    "static/media/home.module.css": "/static/media/test.31941af8.png"
+    "main.css": "/quizza/static/css/main.cd1674c8.chunk.css",
+    "main.js": "/quizza/static/js/main.5d757b4d.chunk.js",
+    "main.js.map": "/quizza/static/js/main.5d757b4d.chunk.js.map",
+    "runtime-main.js": "/quizza/static/js/runtime-main.1953d0fd.js",
+    "runtime-main.js.map": "/quizza/static/js/runtime-main.1953d0fd.js.map",
+    "static/css/2.07cdd676.chunk.css": "/quizza/static/css/2.07cdd676.chunk.css",
+    "static/js/2.3feffebb.chunk.js": "/quizza/static/js/2.3feffebb.chunk.js",
+    "static/js/2.3feffebb.chunk.js.map": "/quizza/static/js/2.3feffebb.chunk.js.map",
+    "index.html": "/quizza/index.html",
+    "precache-manifest.ba61c1325b4312ab0fb3c33754cf3fed.js": "/quizza/precache-manifest.ba61c1325b4312ab0fb3c33754cf3fed.js",
+    "service-worker.js": "/quizza/service-worker.js",
+    "static/css/2.07cdd676.chunk.css.map": "/quizza/static/css/2.07cdd676.chunk.css.map",
+    "static/css/main.cd1674c8.chunk.css.map": "/quizza/static/css/main.cd1674c8.chunk.css.map",
+    "static/js/2.3feffebb.chunk.js.LICENSE.txt": "/quizza/static/js/2.3feffebb.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/quizza/static/media/score.d93858e9.svg",
+    "static/media/home.module.css": "/quizza/static/media/test.31941af8.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.a73f6bde.js",
+    "static/js/runtime-main.1953d0fd.js",
     "static/css/2.07cdd676.chunk.css",
     "static/js/2.3feffebb.chunk.js",
-    "static/css/main.1251488b.chunk.css",
-    "static/js/main.0ccdb72a.chunk.js"
+    "static/css/main.cd1674c8.chunk.css",
+    "static/js/main.5d757b4d.chunk.js"
   ]
 }
